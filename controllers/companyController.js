@@ -7,6 +7,24 @@
 const Member = require("../models/member");
 let companyController = module.exports;
 
+
+
+companyController.getCompanyData = async (req, res) => {
+    try {
+        console.log("GET: cont/getSignupCompany");
+        // TODO get my restaurant products
+
+        res.render("home-list");
+    } catch(err) {
+        console.log(`ERROR: cont/getMyCompanyData, ${err.message}`);
+        res.json({state: "fail", message: err.message});
+    }
+}
+
+
+
+
+
 companyController.getSignupMyCompany = async (req, res) => {
     try {
         console.log("GET: cont/getSignupMyCompany");
@@ -17,21 +35,20 @@ companyController.getSignupMyCompany = async (req, res) => {
     }
 }
 
-companyController.signupProcess = async (req, res ) => {
-    try {
-        console.log("POST: cont/signupproces");
-        const data = req.body,
-            member = new Member(),  // member service modeldan instance olinyabdi
-            new_member = await member.signupData(data);   //ichida request body yuborilyabdi
 
-        res.json({state: 'success', data: new_member});
-    }
-    catch(err){           // xatoni ushlassh uchun try catch dan foydalanamiz
-        console.log(`ERROR, cont/signup, ${err.message}`)
-        res.json({state: "fail", message: err.message});
+
+companyController.signupProcess = async (req, res) => {
+    try {
+        console.log("POST: cont/signup");
+        const data = req.body;
+        const member = new Member(); // member servica modeldan instance olyabdi
+        req.session.member = await member.signupData(data); // mongo db ga qo'shib berdi
+        res.redirect('/resto/products/menu');
+    } catch (err) {
+        console.log(`ERROR, cont/signup, ${err.message}`);
+        res.json({ state: 'fail', message: err.message });
     }
 };
-
 
 
 companyController.getLoginMyCompany = async (req, res ) => {
@@ -46,20 +63,39 @@ companyController.getLoginMyCompany = async (req, res ) => {
 
 companyController.loginProcess = async (req, res ) => {
     try {
-        console.log("POST: cont/login");
+        console.log("POST: cont/login process");
         const data = req.body,
-            member = new Member(),  // member service modeldan instance olinyabdi
-            new_member = await member.loginData(data);   //ichida request body yuborilyabdi
-
-        res.json({state: 'success', data: new_member});
+            member = new Member();   //ichida request body yuborilyabdi
+        req.session.member = await member.loginData(data);
+        req.session.save(function () {     //login bolgandan ken qaysi page ga borishi mumkinligini korsatyabmiz
+            res.redirect("/resto/products/menu");
+        });
     }
-    catch(err){           // xatoni ushlassh uchun try catch dan foydalanamiz
-        console.log(`ERROR, cont/loginProcess, ${err.message}`)
+    catch(err){
+        console.log(`ERROR, cont/login, ${err.message}`)
         res.json({state: "fail", message: err.message});
     }
 };
+
 
 companyController.logout = (req, res ) => {
     console.log("GET cont.logout");
     res.send("logout page");
 };
+
+companyController.validateAuthCompany = (req, res, next) => {
+    if(req.session?.member?.mb_type === "RESTAURANT") {
+        req.member = req.session.member;
+        next();
+    } else res.json({state: "fail", message: "only authenticated members with restaurant type" })
+};
+
+
+companyController.checkSessions = (req, res ) => {
+    if(req.session?.member) {
+        res.json({state: 'succeed', data: req.session.member });
+    } else {
+        res. json ({state: "fail", message: "You aren't authenticated"});
+    }
+};
+// agar session mavjud bolsa sessiondagi ma'lumotlarni brouserga yuborsin

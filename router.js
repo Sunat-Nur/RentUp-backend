@@ -10,7 +10,9 @@ const memberController = require("./controllers/memberController");
 // react uchun //  zamonaviy  usul
 
 
+//memberlarga dahldor routerlar
 
+//va bu router orqali turli xil routerlar shakilyanyabdi
 router.post("/signup", memberController.signup);  // async function ning callback methodan foydalanyabmiz
 router.post("/login", memberController.login);
 router.get("/logout", memberController.logout);
@@ -18,7 +20,7 @@ router.get("/logout", memberController.logout);
 
 // boshqa routerlar
 router.get("/menu",  (req, res) =>{
-    res.send ("menu page");
+    res.send ("home-list page");
 });
 
 

@@ -1,7 +1,9 @@
 
 const express = require("express");
-const router_bssr = express.Router();                   // expressni ichidan router olib chiqilyabdi
+const router_bssr = express.Router();
 const companyController = require("./controllers/companyController");
+const productController = require("./controllers/productController");
+const {uploadProductImage} = require("./utils/upload-multer");
 
 
 /**********************************
@@ -24,7 +26,17 @@ router_bssr
     .post("/login", companyController.loginProcess);
 
 router_bssr.get("/logout", companyController.logout);
+router_bssr.get("/check-me", companyController.checkSessions);
 
+
+
+router_bssr.get("/products/menu", companyController.getCompanyData);
+router_bssr.post("/products/create",
+    companyController.validateAuthCompany,
+    uploadProductImage.array("product_images", 5),
+    productController.addNewProduct
+);
+router_bssr.post("products/edit/:id", productController.updateChosenProduct);
 
 
 // export router
