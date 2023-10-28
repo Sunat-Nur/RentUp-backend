@@ -22,7 +22,7 @@ const memberSchema = new mongoose.Schema({
     mb_type: {
         type: String,
         required: false,
-        default: "USER",
+        default: "RESTAURANT",
         enum: {
             values: member_type_enums,
             message: "{VALUE} is not among permitted values "
@@ -62,7 +62,7 @@ const memberSchema = new mongoose.Schema({
         required: false,
         default: "N",
         enum: {
-            values: ordernary_enums,
+            values: "N",
             message: "{VALUE} is not among permitted values "
         }
     },

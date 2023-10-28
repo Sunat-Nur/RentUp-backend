@@ -14,6 +14,8 @@ const {uploadProductImage} = require("./utils/upload-multer");
 
 // traditionda front-end da view ishlamaydi o'rniga json formatda ma'lumot boradi
 
+router_bssr.get("/",companyController.home);
+
 
 router_bssr
     .get("/signup", companyController.getSignupMyCompany)  // async function ning callback methodan foydalanyabmiz
@@ -30,7 +32,7 @@ router_bssr.get("/check-me", companyController.checkSessions);
 
 
 
-router_bssr.get("/products/menu", companyController.getCompanyData);
+router_bssr.get("/products/menu", companyController.getMyCompanyProducts);
 router_bssr.post("/products/create",
     companyController.validateAuthCompany,
     uploadProductImage.array("product_images", 5),

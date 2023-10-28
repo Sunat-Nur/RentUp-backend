@@ -5,25 +5,35 @@
 
 
 const Member = require("../models/member");
+const Product = require("../models/product");
+
 let companyController = module.exports;
 
 
-
-companyController.getCompanyData = async (req, res) => {
+companyController.home = (req,res) => {
     try {
-        console.log("GET: cont/getSignupCompany");
+        console.log("GET: cont/home");
+        res.render('home-page');  // home-page.ejs fielga malumotni yuborayopti.
+    } catch(err) {
+        console.log(`ERROR: cont/home, ${err.message}`);  //error bulsa qaytar degan qism.
+        res.json({state: "fail", message: err.message});
+    }
+};
+
+companyController.getMyCompanyProducts = async (req, res) => {
+    try {
+        console.log("GET: cont/getMyCompanyProducts");
         // TODO get my restaurant products
 
-        res.render("home-list");
+        const product = new Product();
+        const data = await product.getAllProductsDataResto(res.locals.member);
+
+        res.render("home-page", {company_data: data});
     } catch(err) {
-        console.log(`ERROR: cont/getMyCompanyData, ${err.message}`);
+        console.log(`ERROR: cont/getMyCompanyProducts, ${err.message}`);
         res.json({state: "fail", message: err.message});
     }
 }
-
-
-
-
 
 companyController.getSignupMyCompany = async (req, res) => {
     try {
