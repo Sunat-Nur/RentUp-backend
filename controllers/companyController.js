@@ -4,10 +4,15 @@
  */
 
 
-const Member = require("../models/member");
-const Product = require("../models/product");
 
-let companyController = module.exports;
+const Member = require("../models/Member");
+const Definer = require("../lib/error");
+const jwt = require("jsonwebtoken");
+const assert = require("assert");
+const memberController = module.exports;
+const memberModel = module.exports;
+
+const companyController = module.exports
 
 
 companyController.home = (req,res) => {
