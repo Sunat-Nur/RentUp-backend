@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 const {member_status_enums, member_type_enums, ordernary_enums} = require("../lib/config");
 
 const memberSchema = new mongoose.Schema({
-    // mongoose ni ichidan schema olinyabdi
-    // schema validation ham hisoblanadi
     mb_nick: {
         type: String,
         required: true,
@@ -17,12 +15,12 @@ const memberSchema = new mongoose.Schema({
     mb_password: {
         type: String,
         required: true,
-        select: false  // password ko'rinmasligi uchun
+        select: false
     },
     mb_type: {
         type: String,
         required: false,
-        default: "RESTAURANT",
+        default: "COMPANY",
         enum: {
             values: member_type_enums,
             message: "{VALUE} is not among permitted values "
