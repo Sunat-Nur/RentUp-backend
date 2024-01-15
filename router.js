@@ -4,8 +4,7 @@ const memberController = require("./controllers/memberController");
 const productController = require("./controllers/productController");
 const companyController = require("./controllers/companyController");
 const orderController = require("./controllers/orderController");
-const communityController = require("./controllers/communityController");
-const {getChosenMember} = require("./controllers/memberController");
+const communityController = require("./controllers/communityContoller");
 const uploader_community = require ("./utils/upload-multer")("community");
 const uploader_member = require ("./utils/upload-multer")("members");
 const followController = require("./controllers/followController");
@@ -46,21 +45,21 @@ router.get(
 );
 
 router.get("/companies",
-    memberController.retrieveAuthMember,  // oldin view qilganmi va kim request qiladiganini bilish un retrieveAuthMember ishlatyabman
-    companyController.getCompanies  // memberController da getRestaurants metodini yasayabmn
+    memberController.retrieveAuthMember,
+    companyController.getCompanies
 );
 
 router.get(
-    "/restaurants/:id", // biz xoxlagan restaurant_id ni param,  url orqali obkelyabmn,
-    memberController.retrieveAuthMember,  // oldin view qilganmi va kim request qiladiganini bilish un retrieveAuthMember ishlatyabman
-    companyController.getCompanies // restaurantController da getChosenRestaurant methodini yaratib olyabman
+    "/restaurants/:id",
+    memberController.retrieveAuthMember,
+    companyController.getCompanies
 );
 
 router.post(
     "/member/update",
     memberController.retrieveAuthMember,
     uploader_member.single("mb_image"),
-    memberController.updateMember // like qilishga target
+    memberController.updateMember
 );
 
 
@@ -94,11 +93,10 @@ router.post(
 
 router.post(
     "/community/image",
-    uploader_community.single("community_image"), // upload qiladigan rasmni single deb qoydim
+    uploader_community.single("community_image"),
     communityController.imageInsertion
 );
 
-// article yasaydigan router yaratyabman
 router.post(
     "/community/create",
     memberController.retrieveAuthMember,
@@ -118,7 +116,7 @@ router.get(
 );
 
 router.get(
-    "/community/single-article/:art_id", // biz xoxlagan article_id ni param,  url orqali obkelyabmn,
+    "/community/single-article/:art_id",
     memberController.retrieveAuthMember,
     communityController.getChosenArticle
 );

@@ -10,7 +10,7 @@ const uploader = require("./utils/upload-multer")
 
 router_bssr.get("/", companyController.home);
 router_bssr
-    .get("/sign-up", companyController.getSignupMyCompany)
+    .get("/signup", companyController.getSignupMyCompany)
     .post(
         "/sign-up",
         uploader("members").single("company_img")
