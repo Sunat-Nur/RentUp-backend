@@ -1,116 +1,124 @@
-const LikeModel = require("../schema/like.model");
-const MemberModel = require("../schema/member.model");
-const ProductModel = require("../schema/product.model");
 const BoArticleModel = require("../schema/bo_article.model");
 const Definer = require("../lib/error");
+const assert = require("assert");
+const {shapeIntoMongooseObjectId, board_id_enum_list, lookup_auth_member_liked} = require("../lib/config");
+const Member = require("./Member");
 
-
-class Like {
-    constructor(mb_id) {
-        this.likeModel = LikeModel;
-        this.memberModel = MemberModel;
-        this.productModel = ProductModel;
+class Community {
+    constructor() {
         this.boArticleModel = BoArticleModel;
-        this.mb_id = mb_id;
     }
 
-    async validateTargetItem(like_ref_id, group_type) {
+    async createArticleData(member, data) {
         try {
-            console.log("validateTargetItem is working");
-
-            let result;
-            switch (group_type) {
-                case "member":
-                    result = await this.memberModel
-                        .findOne({_id: like_ref_id, mb_status: "ACTIVE"})
-                        .exec();
-                    break;
-                case "product":
-                    result = await this.productModel
-                        .findOne({_id: like_ref_id, product_status: "PROCESS"})
-                        .exec();
-                    break;
-                case "community":
-                    result = await this.boArticleModel
-                        .findOne({_id: like_ref_id, art_status: "active"})
-                        .exec();
-                    break;
-            }
-            console.log("Result from the database:", result);
-            return !!result;
+            data.mb_id = shapeIntoMongooseObjectId(member._id);
+            const new_article = await this.saveArticleData(data);
+            console.log("new_article::::::", new_article);
+            return new_article;
         } catch (err) {
             throw err;
         }
     };
 
-    async checkLikeExistence(like_ref_id) {
+    async saveArticleData(data) {
         try {
-            const like = await this.likeModel.findOne({
-                mb_id: this.mb_id,
-                like_ref_id: like_ref_id
-            })
-                .exec();
-            return !!like;
+            console.log(" saveArticleData is working")
+            const article = new this.boArticleModel(data);
+            return await article.save();
         } catch (err) {
-            throw err;
-        }
-    };
-
-
-    async removeMemberLike(like_ref_id, group_type) {
-        try {
-            const result = await this.likeModel.findOneAndDelete({
-                like_ref_id: like_ref_id,
-                mb_id: this.mb_id
-            })
-                .exec();
-            await this.modifyItemLikeCounts(like_ref_id, group_type, -1);
-            return result;
-        } catch (err) {
-            throw err;
-        }
-    };
-
-    async insertMemberLike(like_ref_id, group_type) {
-        try {
-            const new_like = new this.likeModel({
-                mb_id: this.mb_id,
-                like_ref_id: like_ref_id,
-                like_group: group_type,
-            });
-            const result = await new_like.save();
-            await this.modifyItemLikeCounts(like_ref_id, group_type, 1);
-            return result;
-        } catch (err) {
+            console.log(err);
             throw new Error(Definer.mongo_validation_err1);
         }
     };
 
-    async modifyItemLikeCounts(like_ref_id, group_type, modifier) {
+    async getMemberArticlesData(member, mb_id, inquiry) {
         try {
-            switch (group_type) {
-                case "member":
-                    await this.memberModel
-                        .findByIdAndUpdate({_id: like_ref_id}, {$inc: {mb_likes: modifier}})
-                        .exec();
-                    break;
-                case "product":
-                    await this.productModel
-                        .findByIdAndUpdate({_id: like_ref_id}, {$inc: {product_likes: modifier}})
-                        .exec();
-                    break;
-                case "community":
-                default:
-                    await this.boArticleModel
-                        .findByIdAndUpdate({_id: like_ref_id}, {$inc: {art_likes: modifier}})
-                        .exec();
-                    break;
-            }
-            return true;
+            const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
+            mb_id = shapeIntoMongooseObjectId(mb_id);
+            const page = inquiry["page"] ? inquiry["page"] * 1 : 1;
+            const limit = inquiry["limit"] ? inquiry["limit"] * 1 : 5;
+            const result = await this.boArticleModel
+                .aggregate([{
+                    $match: {mb_id: mb_id, art_status: "active"}
+                },
+                    {$sort: {createdAt: -1}},
+                    {$skip: (page - 1) * limit},
+                    {$limit: limit},
+                    {
+                        $lookup: {
+                            from: "members",
+                            localField: "mb_id",
+                            foreignField: "_id",
+                            as: "member_data",
+                        },
+                    },
+                    {$unwind: "$member_data"},
+                    lookup_auth_member_liked(auth_mb_id),
+                ])
+                .exec();
+            assert.ok(mb_id, Definer.article_err1);
+            return result;
         } catch (err) {
             throw err;
         }
     };
-};
 
-module.exports = Like;
+    async getArticlesData(member, inquiry) {
+        try {
+            const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
+            let matches =
+                inquiry.bo_id === "all"
+                    ? {bo_id: {$in: board_id_enum_list}, art_status: "active"}
+                    : {bo_id: inquiry.bo_id, art_status: "active"};
+
+            const limit = (inquiry.limit *= 1);
+            const page = (inquiry.page *= 1);
+            const sort = inquiry.order
+                ? {[`${inquiry.order}`]: -1}
+                : {createdAt: -1};
+
+            const result = await this.boArticleModel
+                .aggregate([
+                    {$match: matches},
+                    {$sort: sort},
+                    {$skip: (page - 1) * limit},
+                    {$limit: limit},
+                    {
+                        $lookup: {
+                            from: "members",
+                            localField: "mb_id",
+                            foreignField: "_id",
+                            as: "member_data",
+                        },
+                    },
+                    {$unwind: "$member_data"},
+                    lookup_auth_member_liked(auth_mb_id),
+                ])
+                .exec();
+            assert.ok(result, Definer.article_err3);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    }
+
+
+    async getChosenArticleData(member, art_id) {
+        try {
+            art_id = shapeIntoMongooseObjectId(art_id);
+            if (member) {
+                const member_obj = new Member();
+                const result = await member_obj.viewChosenItemByMember(member, art_id, "community");
+            }
+            const result = await this.boArticleModel.findById({_id: art_id})
+                .exec();
+            assert.ok(result, Definer.article_err3);
+            return result;
+        } catch (err) {
+            throw err;
+        }
+    };
+
+}
+
+module.exports = Community;
