@@ -93,11 +93,3 @@ const memberSchema = new mongoose.Schema({
 module.exports = mongoose.model("Member", memberSchema);
 
 
-
-/*
-schemani ikki xil usulda qurish mumkin
-
-code based -- schema based
-code first method --- schema first
-
- */

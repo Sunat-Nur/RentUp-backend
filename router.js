@@ -7,13 +7,10 @@ const memberController = require("./controllers/memberController");
 /**********************************
  *         REST  API             *
  **********************************/
-// react uchun //  zamonaviy  usul
 
 
-//memberlarga dahldor routerlar
 
-//va bu router orqali turli xil routerlar shakilyanyabdi
-router.post("/signup", memberController.signup);  // async function ning callback methodan foydalanyabmiz
+router.post("/signup", memberController.signup);
 router.post("/login", memberController.login);
 router.get("/logout", memberController.logout);
 
