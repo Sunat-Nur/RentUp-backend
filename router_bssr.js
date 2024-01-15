@@ -1,27 +1,20 @@
-
 const express = require("express");
 const router_bssr = express.Router();
 const companyController = require("./controllers/companyController");
 const productController = require("./controllers/productController");
-const {uploadProductImage} = require("./utils/upload-multer");
-
+const uploader = require("./utils/upload-multer")
 
 /**********************************
  *         BSSR  EJS             *
  **********************************/
-// ejs uchun,  anaaviy usul
 
-
-// traditionda front-end da view ishlamaydi o'rniga json formatda ma'lumot boradi
-
-router_bssr.get("/",companyController.home);
-
-
+router_bssr.get("/", companyController.home);
 router_bssr
-    .get("/signup", companyController.getSignupMyCompany)  // async function ning callback methodan foydalanyabmiz
-    .post("/signup", companyController.signupProcess);  // async function ning callback methodan foydalanyabmiz
-
-// biri pageni obberadi biri run qiladi
+    .get("/sign-up", companyController.getSignupMyCompany)
+    .post(
+        "/sign-up",
+        uploader("members").single("company_img")
+        , companyController.signupProcess);
 
 router_bssr
     .get("/login", companyController.getLoginMyCompany)
@@ -30,18 +23,30 @@ router_bssr
 router_bssr.get("/logout", companyController.logout);
 router_bssr.get("/check-me", companyController.checkSessions);
 
+router_bssr.get("/products/menu", companyController.getMyCompaniesProducts);
 
-
-router_bssr.get("/products/menu", companyController.getMyCompanyProducts);
 router_bssr.post("/products/create",
     companyController.validateAuthCompany,
-    uploadProductImage.array("product_images", 5),
+    uploader("products").array("product_images", 5),
     productController.addNewProduct
 );
-router_bssr.post("products/edit/:id", productController.updateChosenProduct);
+router_bssr.post("/products/edit/:id",   // oxirida : nupqda bolsa param xisoblanadi
+    companyController.validateAuthCompany,
+    productController.updateChosenProduct);
+
+router_bssr.get("/all-restaurant",
+    companyController.validateAdmin,
+    companyController.getAllCompanies);
+
+
+router_bssr.post(
+    "/all-restaurant/edit",
+    companyController.validateAdmin,
+    companyController.updateCompanyByAdmin
+);
+
 
 
 // export router
 module.exports = router_bssr;
-
 

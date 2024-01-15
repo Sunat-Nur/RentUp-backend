@@ -6,7 +6,7 @@ const Definer = require("../lib/error");
 const assert = require("assert");
 const companyController = module.exports;
 
-companyController.getRestaurants = async (req, res) => {
+companyController.getCompanies = async (req, res) => {
     try {
         console.log("GET: cont/getCompanies");
         const data = req.query;
@@ -83,7 +83,6 @@ companyController.signupProcess = async (req, res) => {
         const member = new Member();
         const result = await member.signupData(new_member);
         assert(req.file, Definer.general_err1);
-
         req.session.member = result;
         req.session.save(function () {
             res.redirect('/resto/products/menu');
@@ -167,7 +166,6 @@ companyController.checkSessions = (req, res) => {
 companyController.getAllCompanies = async (req, res) => {
     try {
         console.log("GET cont/getAllCompanies");
-
         const company = new Company();
         const companies_data = await company.getAllCompaniesData();
         res.render("all-companies", {companies_data: companies_data});
