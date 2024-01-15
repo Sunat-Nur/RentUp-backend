@@ -1,32 +1,163 @@
-
 const express = require("express");
-const router = express.Router();                   // expressni ichidan router olib chiqilyabdi
+const router = express.Router();
 const memberController = require("./controllers/memberController");
-
+const productController = require("./controllers/productController");
+const companyController = require("./controllers/companyController");
+const orderController = require("./controllers/orderController");
+const communityController = require("./controllers/communityController");
+const {getChosenMember} = require("./controllers/memberController");
+const uploader_community = require ("./utils/upload-multer")("community");
+const uploader_member = require ("./utils/upload-multer")("members");
+const followController = require("./controllers/followController");
 
 /**********************************
- *         REST  API             *
+ * Member related routers        *
  **********************************/
-
-
 
 router.post("/signup", memberController.signup);
 router.post("/login", memberController.login);
 router.get("/logout", memberController.logout);
+router.get("/check-me", memberController.checkMyAuthentication);
+router.get(
+    "/member/:id",
+    memberController.retrieveAuthMember,
+    memberController.getChosenMember
+);
+
+router.post(
+    "/member-liken",
+    memberController.retrieveAuthMember,
+    memberController.likenMemberChosen ,
+);
+
+/**********************************
+ * Product related routers        *
+ **********************************/
+
+router.post(
+    "/products",
+    memberController.retrieveAuthMember,
+    productController.getAllProducts);
+
+router.get(
+    "/products/:id",
+    memberController.retrieveAuthMember,
+    productController.getChosenProduct
+);
+
+router.get("/companies",
+    memberController.retrieveAuthMember,  // oldin view qilganmi va kim request qiladiganini bilish un retrieveAuthMember ishlatyabman
+    companyController.getCompanies  // memberController da getRestaurants metodini yasayabmn
+);
+
+router.get(
+    "/restaurants/:id", // biz xoxlagan restaurant_id ni param,  url orqali obkelyabmn,
+    memberController.retrieveAuthMember,  // oldin view qilganmi va kim request qiladiganini bilish un retrieveAuthMember ishlatyabman
+    companyController.getCompanies // restaurantController da getChosenRestaurant methodini yaratib olyabman
+);
+
+router.post(
+    "/member/update",
+    memberController.retrieveAuthMember,
+    uploader_member.single("mb_image"),
+    memberController.updateMember // like qilishga target
+);
 
 
-// boshqa routerlar
-router.get("/menu",  (req, res) =>{
-    res.send ("home-list page");
-});
+/**********************************
+ * order related routers        *
+ **********************************/
+
+router.post(
+    "/orders/create",
+    memberController.retrieveAuthMember,
+    orderController.createOrder
+)
+
+router.get(
+    "/orders", // end_point
+    memberController.retrieveAuthMember, // oldin view qilganmi va kim request qiladiganini bilish un retrieveAuthMember ishlatyabman
+    orderController.getMyOrders,  // orderController da getMyOrders methodini yaratib olyabman
+);
+
+router.post(
+    "/orders/edit",
+    memberController.retrieveAuthMember,  // oldin view qilganmi va kim request qiladiganini bilish un retrieveAuthMember ishlatyabman
+    orderController.editChosenOrder  // orderController da editChosenOrder methodini yaratib olyabman
+);
 
 
-router.get("/community",  (req, res) => {
-    res.send ("community page");
-});
+
+/**********************************
+ * Community related routers        *
+ **********************************/
+
+router.post(
+    "/community/image",
+    uploader_community.single("community_image"), // upload qiladigan rasmni single deb qoydim
+    communityController.imageInsertion
+);
+
+// article yasaydigan router yaratyabman
+router.post(
+    "/community/create",
+    memberController.retrieveAuthMember,
+    communityController.createArticle
+);
+
+router.get(
+    "/community/articles",
+    memberController.retrieveAuthMember,
+    communityController.getMemberArticles
+);
+
+router.get(
+    "/community/target",
+    memberController.retrieveAuthMember,
+    communityController.getArticles
+);
+
+router.get(
+    "/community/single-article/:art_id", // biz xoxlagan article_id ni param,  url orqali obkelyabmn,
+    memberController.retrieveAuthMember,
+    communityController.getChosenArticle
+);
 
 
-// export router
+/**********************************
+ * Following related routers        *
+ **********************************/
+
+
+router.post(
+    "/follow/subscribe",
+    memberController.retrieveAuthMember,
+    followController.subscribe
+);
+
+
+router.post(
+    "/follow/unsubscribe",
+    memberController.retrieveAuthMember,
+    followController.unsubscribe
+);
+
+
+router.get(
+    "/follow/followings",
+    followController.getMemberFollowings
+);
+
+router.get(
+    "/follow/followers",
+    memberController.retrieveAuthMember,
+    followController.getMemberFollowers
+);
+
 module.exports = router;
+
+// request lar 3 xil
+
+// rest API, TRadition va graphl request
 
 
