@@ -36,7 +36,7 @@ router_adminka.post("/products/edit/:id",   // oxirida : nupqda bolsa param xiso
 
 router_adminka.get("/all-company",
     companyController.validateAdmin,
-    companyController.getAllCompanies);
+    companyController.getAllCompany);
 
 
 router_adminka.post(

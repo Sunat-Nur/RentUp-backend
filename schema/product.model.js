@@ -3,17 +3,16 @@ const mongoose = require("mongoose");
 const {
     product_collection_enums,
     product_status_enums,
-    product_size_enums,
     product_volume_enums,
 } = require("../lib/config");
 
 const Schema = mongoose.Schema;
 
 const productSchema = new mongoose.Schema({
-        product_name: {
-            type: String,
-            required: true,
-        },
+        // product_name: {
+        //     type: String,
+        //     required: true,
+        // },
         product_collection: {
             type: String,
             required: true,
@@ -35,35 +34,27 @@ const productSchema = new mongoose.Schema({
             type: Number,
             required: true,
         },
-        product_discount: {
-            type: Number,
-            required: false,
-            default: 0,
-        },
-        product_left_cnt: {
+        product_size: {
             type: Number,
             required: true,
         },
-        product_size: {
-            type: String,
-            default: "normal",
-            required: function () {
-                const sized_list = ['hovli', 'dom', 'etc'];
-                return sized_list.includes(this.product_collection);
-            },
-            enum: {
-                values: product_size_enums,
-                message: "{VALUE} is not among permitted enum values",
-            },
-            product_collection: () => {
-            }
-        },
+        // product_size: {
+        //     type: String,
+        //     default: "normal",
+        //     required: function () {
+        //         const sized_list = ["Hose", "Apartment", "Office & Studio", "Villa Condo","etc"];
+        //         return sized_list.includes(this.product_collection);
+        //     },
+        //     enum: {
+        //         values: product_size_enums,
+        //         message: "{VALUE} is not among permitted enum values",
+        //     },
+        //     product_collection: () => {
+        //     }
+        // },
         product_volume: {
             type: String,
-            default: 1,
-            required: function () {
-                return this.product_collection === "kv";
-            },
+            required: true,
             enum: {
                 values: product_volume_enums,
                 message: "{VALUE} is not among permitted enum values",
@@ -101,7 +92,7 @@ const productSchema = new mongoose.Schema({
 productSchema.index(
     {
         company_mb_id: 1,
-        product_name: 1,
+        // product_name: 1,
         product_size: 1,
         product_volume: 1,
     },

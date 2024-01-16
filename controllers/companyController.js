@@ -163,12 +163,12 @@ companyController.checkSessions = (req, res) => {
     }
 };
 
-companyController.getAllCompanies = async (req, res) => {
+companyController.getAllCompany = async (req, res) => {
     try {
         console.log("GET cont/getAllCompanies");
         const company = new Company();
-        const companies_data = await company.getAllCompaniesData();
-        res.render("all-companies", {companies_data: companies_data});
+        const companies_data = await company.getAllCompanyData();
+        res.render("all-company", {companies_data: companies_data});
 
     } catch (err) {
         console.log(`ERROR, cont/getAllCompanies, ${err.message}`);

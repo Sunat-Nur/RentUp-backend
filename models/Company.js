@@ -66,7 +66,7 @@ class Company {
         }
     };
 
-    async getAllCompaniesData() {
+    async getAllCompanyData() {
         try {
             const result = await this.memberModel
                 .find({
