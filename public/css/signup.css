@@ -4,7 +4,7 @@ body {
     height: 100%;
 }
 
-.login_container {
+.singup_container {
     position: relative;
     width: 100%;
     height: 100%;
@@ -13,10 +13,10 @@ body {
     display: inline-flex;
     background-size: cover;
     flex-direction: column;
-    padding-left: 500px;
-    padding-top: 80px;
+    padding-left: 80px;
+    padding-top: 40px;
     /*justify-content: center;*/
-    background-image: url(https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=2574&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+    background-image: url(https://media.istockphoto.com/id/1479640008/ko/%EC%82%AC%EC%A7%84/%EC%95%88%EB%9D%BD-%EC%9D%98%EC%9E%90%EC%99%80-%EC%BB%A4%ED%94%BC-%ED%85%8C%EC%9D%B4%EB%B8%94%EC%9D%B4%EC%9E%88%EB%8A%94-%EC%9D%B8%ED%85%8C%EB%A6%AC%EC%96%B4.jpg?s=2048x2048&w=is&k=20&c=Ztkud3DGPXt0I8znGXlawr8rxx8RtH-HydPHsR3gedI=);
     animation: gradient 15s ease infinite;
     -webkit-animation:  gradient 15s ease infinite;
     /*background-size: 200% 200%;*/

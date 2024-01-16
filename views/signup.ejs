@@ -1,16 +1,16 @@
 <%- include("includes/header") %>
 
-<link rel="stylesheet" type="text/css" href="/css/login.css">
+<link rel="stylesheet" type="text/css" href="/css/signup.css">
 
 <body>
 <form
         onsubmit="return validateSignUpForm()"
-        class="login_container"
+        class="singup_container"
         action="/resto/signup"
         method="POST"
         enctype="multipart/form-data"
 >
-    <div class="login_frame"style="width: 650px; height: 730px">
+    <div class="login_frame" style="width: 650px; height: 730px">
 
         <div class="login_top">
             <span>Ro'yxatdan o'tish</span>
@@ -26,23 +26,23 @@
 
         <div class="sign-input_frame">
             <div class="sign_up_frame">
-                <label>Foydalanuvchining ismi</label>
+                <label>user name</label>
                 <input
                         type="text"
                         name="mb_nick"
                         class="mb_nick"
-                        placeholder="Foydalanuvchining ismi"
+                        placeholder="user name"
                         value=""
                         required
                 />
             </div>
             <div class="sign_up_frame">
-                <label>Telefon raqam</label>
+                <label>phone</label>
                 <input
                         type="text"
                         name="mb_phone"
                         class="mb_phone"
-                        placeholder="Telefon raqam"
+                        placeholder="phone"
                         value=""
                         required
                 />
@@ -56,18 +56,18 @@
                         type="password"
                         name="mb_password"
                         class="mb_password"
-                        placeholder="passwordni kiriting"
+                        placeholder="input passwor"
                         value=""
                         required
                 />
             </div>
             <div class="sign_up_frame">
-                <label>Passwordni qayta kiriting</label>
+                <label>confirm passwor</label>
                 <input
                         type="password"
                         name="mb_confirm_password"
                         class="mb_confirm_password"
-                        placeholder="passwordni tasdiqlash"
+                        placeholder="confirm password"
                         value=""
                         required
 
@@ -79,14 +79,14 @@
             <div class="media_frame">
                 <img class="upload_img_frame" src="/images/img.png"/>
                 <div class="upload_container">
-                    <span class="media_text">restaurant logotipni yuklang</span>
+                    <span class="media_text">upload logotip</span>
                     <div class="filebox bs3-primary preview-image">
                         <input
                                 class="upload-name"
-                                value="Rasmni tanlang"
+                                value="choose file"
                                 disabled="disabled"
                         />
-                        <label for="input_file"> Rasm yuklash </label>
+                        <label for="input_file"> upload </label>
                         <input
                                 type="file"
                                 id="input_file"
@@ -95,14 +95,14 @@
                         />
                     </div>
                     <p class="thumbnail_desc">
-                        Oshxona rasminggizni buyerga yuklang.<br /> Muhim kursatmalar: .jpg,
-                        .jpeg yoki .png. <br />rasmda matn yo'q bo'lishi kerak!
+                        Oshxona rasminggizni buyerga yuklang.<br/> Muhim kursatmalar: .jpg,
+                        .jpeg yoki .png. <br/>rasmda matn yo'q bo'lishi kerak!
                     </p>
                 </div>
             </div>
         </div>
         <button class="login_btn btn" name="signup" type="submit">
-            Ro'yxatdan o'tish
+            Submit
         </button>
     </div>
 </form>
@@ -113,7 +113,7 @@
         let fileTarget = $(".filebox .upload-hidden");   //filetarget deb upload-hidden deb lamiz
         let filename = "";
         fileTarget.on("change", function () { //agar file on change ishga tushganda function ishga tushsin deyabmiz
-            if(window.FileReader) {           // windowni filereaderi mavjud bolsa deyabmiz
+            if (window.FileReader) {           // windowni filereaderi mavjud bolsa deyabmiz
                 const uploading_file = $(this) [0].files[0];   // this ni shu joydan olishni ko'rsatyamiz
                 const fileType = uploading_file["type"];      // uploading fileni ichidan type ni olyabmiz
                 const validImagesTypes = ["image/jpg", "image/jpeg", "image/png",];
@@ -146,7 +146,7 @@
         const mb_confirm_password = $(".mb_confirm_password").val();
         const restaurant_img = $('.restaurant_img').get(0).files[0] ?? null;   // agar mavjud bolsa ozini ol yoki null qoy deyabmiz
 
-        if(
+        if (
             mb_nick === ''
             || mb_phone === ''
             || mb_password === ''
@@ -159,7 +159,7 @@
             return false;
         }
 
-        if(!restaurant_img) {
+        if (!restaurant_img) {
             alert("iltimos rasmni yuklang!");
             return false;
         }
