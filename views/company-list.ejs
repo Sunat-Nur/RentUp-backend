@@ -5,7 +5,6 @@
 
 <body>
 <div id="main_container">
-
     <div class="group_name">
         <ul class="nav justify-content-center">
             <li class="nav-item" style="cursor: pointer">
@@ -20,7 +19,7 @@
         </ul>
     </div>
 
-    <div class="restaurant_menu_frame">
+    <div class="company_menu_frame">
             <div class="dishs_companytable">
                      <span class="mb_dish-txt">
                          <%= member.mb_nick.toUpperCase() %> toamlar menyusi
@@ -35,9 +34,6 @@
                     <th scope="col">number real estate</th>
                     <th scope="col">status real estate</th>
                     </thead>
-
-
-                    <!--     restaurant data ni databasedan ob kelyabmiz uni ichida productlar bor... array bolgani uchun map ni ishlatyabmiz -->
 
                     <% company_data.map((value, key) => { %>
                         <tbody style="background-color: white">
@@ -77,7 +73,6 @@
                 <div class="long_input" style="display: flex; align-items: center; margin-bottom: 25px;">
                     <span class="new_dish_txt">new real estate</span>
                 </div>
-
                 <div>
                     <div class="long_input">
                         <label>name of real estate</label>
@@ -85,7 +80,6 @@
                     </div>
                     <input name="product_status" value="PAUSED" class="product_status" hidden>
                 </div>
-
                 <div class="half_input_frame">
                     <div class="half_input">
                         <label>price of real estate</label>
@@ -97,9 +91,7 @@
                                class="product_left_cnt">
                     </div>
                 </div>
-
                 <div class="half_input_frame">
-
                     <div class="half_input">
                         <label>type of real estate</label>
                         <select class="product_collection" name="product_collection">
@@ -110,8 +102,6 @@
                             <option value="etc">Boshqa</option>
                         </select>
                     </div>
-
-
                     <div class="half_input" id="product_size">
                         <label>Taom Hajmi</label>
                         <select class="product_size" name="product_size">
@@ -121,8 +111,6 @@
                             <option value="set">Set</option>
                         </select>
                     </div>
-
-
                     <div class="half_input" id="product_volume" style="display: none;">
                         <label>Ichimlik Hajmi</label>
                         <select class="product_volume" name="product_volume">
@@ -134,13 +122,10 @@
                         </select>
                     </div>
                 </div>
-
-
                 <div class="long_input">
                     <label>Taom Haqida</label>
                     <textarea name="product_description" class="product_description"></textarea>
                 </div>
-
                 <div class="img_frame">
                     <label>Taom Rasmlari</label>
                     <div class="media_frame">
@@ -155,7 +140,6 @@
                             <input type="file" id="file" name="product_images" class="image_two"
                                    onchange="priewFileHandler(this, 2)">
                         </div>
-
                         <div class="upload_img_box">
                             <img src="/images/upload.png" class="3" id="image_section_3" alt="">
                             <input type="file" id="file" name="product_images" class="image_three"
@@ -173,11 +157,9 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="long_input" style="align-items: flex-end; margin-bottom: 25px">
                     <button type="submit" class="btn btn-primary" id="create_product">chop etish</button>
                 </div>
-
             </form>
         </div>
     </div>
@@ -185,7 +167,6 @@
 
 <script>
     $(function () {
-
         $(".product_collection").on("change", () => {
             const selected_value = $(".product_collection").val();
             if (selected_value === 'drink') {
@@ -196,32 +177,13 @@
                 $("#product_size").show();
             }
         })
-
         $(".hiding_btn").on("click", () => {
             $(".dish_container").slideToggle(500);
             $(".hiding_btn").css("display", "none");
         })
-
-        /* 3 xil requestlar bor
-        1. tradition API    => EJS
-        2. Rest API         => REACT
-
-        EJS: 1 & 2
-        REACT: 2
-        3. GraphQl API
-        */
-
-
-        // product status
         $(".new_product_status").on("change", async function (e) {
-            // new_pro_status on change bolganda async function ishga tuwyabdi
-
             const id = e.target.id;  // e bu yerda event (changing, hodisa)
             const product_status = $(`#${id}.new_product_status`).val();
-
-            // #${id}.new_product_status` id ini ichidagi new_pro_statusni  qiymatini ber deyabmiz,
-            // eng oxirida  bosilgan knopka ga tegishlisini
-
             try {
                 const response = await axios.post(
                     `/resto/products/edit/${id}`,   // bu yerda endpoint ga id ni qo'shyabmiz
@@ -235,7 +197,6 @@
                 } else {
                     alert(result.message);
                 }
-
             } catch (err) {
                 console.log('updateChosenProduct err:', err);
             }
@@ -244,7 +205,6 @@
     });
 
     function validateForm() {
-
         const company_mb_id = $(".company_mb_id").val(),
             product_name = $(".product_name").val(),
             product_price = $(".product_price").val(),
@@ -252,7 +212,6 @@
             product_collection = $(".product_collection").val(),
             product_description = $(".product_description").val(),
             product_status = $(".product_status").val();
-
         if (
             company_mb_id === '' ||
             product_name === '' ||
@@ -265,14 +224,11 @@
             return false;
         } else return true;
     }
-
     function priewFileHandler(input, order) {
-
         const image_class_name = input.className;
         const file = $(`.${image_class_name}`).get(0).files[0],
             fileType = file['type'],
             validImagesTypes = ['image/jpg', 'image/jpeg', 'image/png'];
-
         if (!validImagesTypes.includes(fileType)) {
             alert('iltimos ruhsat etilgan formatdagi rasmlarni yuklang! (jpg, jpeg, png)');
         } else {

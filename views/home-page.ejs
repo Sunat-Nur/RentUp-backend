@@ -11,9 +11,10 @@
     body {
         height: 100vh;
         width: 100%;
-        --ccft-cs-background: #000;
+        --ccft-cs-background: #898071;
         --ccft-cs-on-surface: #fff;
         --ccft-cs-surface: #fff;
+          font-size: 1.5rem;
         --ccft-cs-primary: hsl(14, 97%, 65%);
         --ccft-cs-primary-alt: hsla(14, 97%, 65%, .3);
         --ccft-ts-primary: Montserrat, sans-serif;
@@ -70,6 +71,10 @@
         opacity: 0;
         visibility: hidden;
         z-index: 2;
+    }
+
+    .a {
+
     }
 
     .layout__wrapper {
@@ -266,11 +271,46 @@
         text-decoration: none;
         transition: background-size .25s, color .3s;
     }
+
     .nav--header-2 > .nav__item > .nav__link:hover {
         background-size: 6px 50px;
         color: #000000;
     }
+
+    .nav-link {
+        color: #000;
+    }
 </style>
+
+<div class="group_name">
+    <ul class="nav justify-content-center">
+        <li class="nav-item" style="cursor: pointer">
+            <a class="nav-link active" href="#">Home</a>
+        </li>
+        <% if(!member) { %>
+            <li class="nav-item" style="cursor: pointer">
+                <a class="nav-link" href="/resto/signup">Signup</a>
+            </li>
+            <li class="nav-item" style="cursor: pointer">
+                <a class="nav-link" href="/resto/login">Login</a>
+            </li>
+        <% } else if (member.mb_type === 'ADMIN') { %>
+            <li class="nav-item" style="cursor: pointer">
+                <a class="nav-link" href="/resto/all-restaurant">AllResto</a>
+            </li>
+            <li class="nav-item" style="cursor: pointer" onclick="return confirm('Do you want to logout?')">
+                <a class="nav-link" href="/resto/logout">Logout</a>
+            </li>
+        <% } else { %>
+            <li class="nav-item" style="cursor: pointer">
+                <a class="nav-link" href="/resto/products/menu">MyResto</a>
+            </li>
+            <li class="nav-item" style="cursor: pointer" onclick="return confirm('Do you want to logout?')">
+                <a class="nav-link" href="/resto/logout">Logout</a>
+            </li>
+        <% } %>
+    </ul>
+</div>
 
 <div class="layout">
     <div class="layout__backdrop"></div>
@@ -279,18 +319,43 @@
         <header class="layout__header">
             <nav>
                 <ul class="nav nav--header nav--header-1">
-                    <% if(!member) { %>
+                    <li class="nav__item nav__item--home">
+                        <a class="nav__link" href="#0">Home</a>
+                    </li>
                     <li class="nav__item nav__item--about">
-                        <a class="nav__link" href="#0">home</a>
+                        <a class="nav__link" href="#0">About</a>
                     </li>
                     <li class="nav__item nav__item--clients">
-                        <a class="nav__link" href="/resto/signup">signUp</a>
+                        <a class="nav__link" href="#0">Clients</a>
+                        <!--                        <ul class="nav nav&#45;&#45;header nav&#45;&#45;header-2">-->
+                        <!--                            <li class="nav__item">-->
+                        <!--                                <a class="nav__link" href="#0">Burger King</a>-->
+                        <!--                            </li>-->
+                        <!--                            <li class="nav__item">-->
+                        <!--                                <a class="nav__link" href="#0">Southwest Airlines</a>-->
+                        <!--                            </li>-->
+                        <!--                            <li class="nav__item">-->
+                        <!--                                <a class="nav__link"  href="#0">Levi Strauss</a>-->
+                        <!--                            </li>-->
+                        <!--                        </ul>-->
                     </li>
-
+                    <li class="nav__item nav__item--services">
+                        <a class="nav__link" href="#0">Services</a>
+                        <ul class="nav nav--header nav--header-2">
+                            <li class="nav__item">
+                                <a class="nav__link" href="#0">Print Design</a>
+                            </li>
+                            <li class="nav__item">
+                                <a class="nav__link" href="#0">Web Design</a>
+                            </li>
+                            <li class="nav__item">
+                                <a class="nav__link" href="#0">Mobile App Development</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav__item nav__item--contact">
-                        <a class="nav__link" href="/resto/login">login</a>
+                        <a class="nav__link" href="#0">Contact</a>
                     </li>
-                        <% } %>
                 </ul>
             </nav>
         </header>
@@ -298,11 +363,10 @@
             <section class='hero'>
                 <div class="hero-block hero-block--header">
                     <h1 class="hero-title">
-                        RentUp <em>Navigation with Sub-navigation, a Codepen Challenge, since.2023.</em>
+                        Rent up <em>Navigation with Sub-navigation, a first Challenge, since 2023.</em>
 
                     </h1>
-                    <p class="hero-text">The idea was to fork a pretty basic navigation</a> and make
-                        something nice with it. The content inspired me some kind of advertising adgency with a bold
+                    <p class="hero-text">The idea The content inspired me some kind of advertising agency with a bold
                         navigation and a little content. Made me work on my hover and active state more than what I'm
                         used to in those weekly challenges.</p>
                 </div>
