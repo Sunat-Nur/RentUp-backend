@@ -1,45 +1,45 @@
 const express = require("express");
-const router_bssr = express.Router();
 const companyController = require("./controllers/companyController");
 const productController = require("./controllers/productController");
 const uploader = require("./utils/upload-multer")
+const router_adminka = express.Router();
 
 /**********************************
  *         BSSR  EJS             *
  **********************************/
 
-router_bssr.get("/", companyController.home);
-router_bssr
+router_adminka.get("/", companyController.home);
+router_adminka
     .get("/signup", companyController.getSignupMyCompany)
     .post(
         "/signup",
-        uploader("members").single("company_img")
-        , companyController.signupProcess);
+        uploader("members").single("company_img"),
+        companyController.signupProcess);
 
-router_bssr
+router_adminka
     .get("/login", companyController.getLoginMyCompany)
     .post("/login", companyController.loginProcess);
 
-router_bssr.get("/logout", companyController.logout);
-router_bssr.get("/check-me", companyController.checkSessions);
+router_adminka.get("/logout", companyController.logout);
+router_adminka.get("/check-me", companyController.checkSessions);
 
-router_bssr.get("/products/menu", companyController.getMyCompaniesProducts);
+router_adminka.get("/products/menu", companyController.getMyCompaniesProducts);
 
-router_bssr.post("/products/create",
+router_adminka.post("/products/create",
     companyController.validateAuthCompany,
     uploader("products").array("product_images", 5),
     productController.addNewProduct
 );
-router_bssr.post("/products/edit/:id",   // oxirida : nupqda bolsa param xisoblanadi
+router_adminka.post("/products/edit/:id",   // oxirida : nupqda bolsa param xisoblanadi
     companyController.validateAuthCompany,
     productController.updateChosenProduct);
 
-router_bssr.get("/all-company",
+router_adminka.get("/all-company",
     companyController.validateAdmin,
     companyController.getAllCompanies);
 
 
-router_bssr.post(
+router_adminka.post(
     "/all-company/edit",
     companyController.validateAdmin,
     companyController.updateCompanyByAdmin
@@ -48,5 +48,5 @@ router_bssr.post(
 
 
 // export router
-module.exports = router_bssr;
+module.exports = router_adminka;
 

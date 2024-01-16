@@ -13,7 +13,7 @@
     <div class="login_frame" style="width: 650px; height: 730px">
 
         <div class="login_top">
-            <span>Ro'yxatdan o'tish</span>
+            <span>Sing up</span>
             <div>
                 Bosh sahifaga qaytish
                 <a href="/resto" style="color: #6440fb">Home</a>
@@ -62,7 +62,7 @@
                 />
             </div>
             <div class="sign_up_frame">
-                <label>confirm passwor</label>
+                <label>confirm password</label>
                 <input
                         type="password"
                         name="mb_confirm_password"
@@ -77,9 +77,9 @@
 
         <div class="login_input_frame">
             <div class="media_frame">
-                <img class="upload_img_frame" src="/images/img.png"/>
+                <img class="upload_img_frame" src="/images/home3.png"/>
                 <div class="upload_container">
-                    <span class="media_text">upload logotip</span>
+                    <span class="media_text">upload lagotip</span>
                     <div class="filebox bs3-primary preview-image">
                         <input
                                 class="upload-name"
@@ -90,12 +90,12 @@
                         <input
                                 type="file"
                                 id="input_file"
-                                name="restaurant_img"
-                                class="upload-hidden form-control-file restaurant_img"
+                                name="company_img"
+                                class="upload-hidden form-control-file company_img"
                         />
                     </div>
                     <p class="thumbnail_desc">
-                        Oshxona rasminggizni buyerga yuklang.<br/> Muhim kursatmalar: .jpg,
+                        Please upload picture of company<br/> Notice: only type: .jpg,
                         .jpeg yoki .png. <br/>rasmda matn yo'q bo'lishi kerak!
                     </p>
                 </div>
@@ -110,12 +110,12 @@
 
 <script>
     $(function () {
-        let fileTarget = $(".filebox .upload-hidden");   //filetarget deb upload-hidden deb lamiz
+        let fileTarget = $(".filebox .upload-hidden");
         let filename = "";
-        fileTarget.on("change", function () { //agar file on change ishga tushganda function ishga tushsin deyabmiz
-            if (window.FileReader) {           // windowni filereaderi mavjud bolsa deyabmiz
-                const uploading_file = $(this) [0].files[0];   // this ni shu joydan olishni ko'rsatyamiz
-                const fileType = uploading_file["type"];      // uploading fileni ichidan type ni olyabmiz
+        fileTarget.on("change", function () {
+            if (window.FileReader) {
+                const uploading_file = $(this) [0].files[0];
+                const fileType = uploading_file["type"];
                 const validImagesTypes = ["image/jpg", "image/jpeg", "image/png",];
                 if (!validImagesTypes.includes(fileType)) {
                     alert(
@@ -137,14 +137,13 @@
     });
 
     //4 xil validation bor
-    // backend (assert), database (schema), front-end(html niki require),
 
     function validateSignUpForm() {
         const mb_nick = $(".mb_nick").val();
         const mb_phone = $(".mb_phone").val();
-        const mb_password = $(".mb_password").val();
+        const mb_password = $(".mb_status").val();
         const mb_confirm_password = $(".mb_confirm_password").val();
-        const restaurant_img = $('.restaurant_img').get(0).files[0] ?? null;   // agar mavjud bolsa ozini ol yoki null qoy deyabmiz
+        const company_img = $('.company_img').get(0).files[0] ?? null;   // agar mavjud bolsa ozini ol yoki null qoy deyabmiz
 
         if (
             mb_nick === ''
@@ -159,7 +158,7 @@
             return false;
         }
 
-        if (!restaurant_img) {
+        if (!company_img) {
             alert("iltimos rasmni yuklang!");
             return false;
         }

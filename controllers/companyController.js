@@ -1,6 +1,6 @@
 const Product = require("../models/Product");
 const Member = require("../models/Member");
-const member = require("../schema/member.model")
+const MemberModel = require("../schema/member.model");
 const Company = require("../models/Company")
 const Definer = require("../lib/error");
 const assert = require("assert");

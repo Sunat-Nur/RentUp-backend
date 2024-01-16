@@ -1,10 +1,8 @@
 console.log("web serverni boshladik");
-const http = require("http");
 const express = require("express");
 const app = express();
 const router = require("./router");
-const router_bssr = require("./router_bssr");
-const cors = require("cors");
+const router_adminka = require("./router_adminka");
 const cookieParser = require("cookie-parser");
 
 
@@ -21,11 +19,9 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('js'));
-app.use(cors({credentials: true, origin: true,}));
 app.use(cookieParser()); //
 
 // 2: Session code
-
 app.use(
     session({
         secret: process.env.SESSION_SECRET,
@@ -41,20 +37,17 @@ app.use(
 app.use(function (req, res, next) {
     res.locals.member = req.session.member;
     next();
-
 })
+
 // 3: Views code
 
 app.set("views", "views");
 app.set("view engine", "ejs",);
 
-
 //4: routing code
 
-const server = http.createServer(app);
-
-
-app.use("/resto", router_bssr);
+app.use("/resto", router_adminka);
 app.use("/", router);
 
-module.exports = server;
+
+module.exports = app;

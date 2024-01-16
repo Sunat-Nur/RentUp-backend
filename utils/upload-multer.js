@@ -4,9 +4,11 @@ const uuid = require("uuid");
 
 
 function getTargetImageStorage(address) {
+
     return multer.diskStorage({
         destination: (req, file, cb) => {
             cb(null, `./uploads/${address}`);
+
         },
 
         filename: (req, file, cb) => {
@@ -20,7 +22,7 @@ function getTargetImageStorage(address) {
 
 const makeUploader = (address) => {
     const storage = getTargetImageStorage(address);
-    return multer({storage: storage});
+    return multer({ storage: storage });
 
 };
 

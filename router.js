@@ -50,7 +50,7 @@ router.get("/companies",
 );
 
 router.get(
-    "/restaurants/:id",
+    "/companies/:id",
     memberController.retrieveAuthMember,
     companyController.getCompanies
 );

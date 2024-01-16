@@ -19,7 +19,7 @@ const memberSchema = new mongoose.Schema({
     },
     mb_type: {
         type: String,
-        required: false,
+        required: true,
         default: "COMPANY",
         enum: {
             values: member_type_enums,
@@ -35,16 +35,13 @@ const memberSchema = new mongoose.Schema({
             message: "{VALUE} is not among permitted values "
         }
     },
-    mb_full_name: {
-        type: String,
-        required: false
-    },
     mb_address: {
         type: String,
         required: false
     },
     mb_description: {
-        type: String, required: false
+        type: String,
+        required: false
     },
     mb_image: {
         type: String,
@@ -84,8 +81,6 @@ const memberSchema = new mongoose.Schema({
         required: false,
         default: 0
     },
-    //{timestamps: true}  updatedAt, createdAt
-
 }, {timestamps: true});
 
 module.exports = mongoose.model("Member", memberSchema);

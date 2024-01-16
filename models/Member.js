@@ -19,6 +19,7 @@ class Member {
             const salt = await bcrypt.genSalt();
             input.mb_password = await bcrypt.hash(input.mb_password, salt);
             const new_member = new this.memberModel(input);
+
             let result;
             try {
                 result = await new_member.save();
