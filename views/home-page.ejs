@@ -1,168 +1,495 @@
 <%- include("includes/header") %>
 
-<link rel="stylesheet" type="text/css" href="/public/css/home.css" />
+
+<link rel="stylesheet" type="text/css" href="/public/css/home.css"/>
 <style>
-    body{
-        background-color: #2c261e;
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        height: 100vh;
+        width: 100%;
+        --ccft-cs-background: #000;
+        --ccft-cs-on-surface: #fff;
+        --ccft-cs-surface: #fff;
+        --ccft-cs-primary: hsl(14, 97%, 65%);
+        --ccft-cs-primary-alt: hsla(14, 97%, 65%, .3);
+        --ccft-ts-primary: Montserrat, sans-serif;
+        --ccft-ts-secondary: 'Abril Fatface', serif;
+        --ccft-spacer-x: 40px;
+        --ccft-spacer-y: 40px;
+        --ccft-brand-size: 60px;
+
+        background-color: var(--ccft-cs-background);
+        font-family: var(--ccft-ts-primary);
+        margin: 0;
+    }
+
+    .layout {
+        background-image: url(https://media.istockphoto.com/id/1655116385/ko/%EC%82%AC%EC%A7%84/%EC%9D%B8%ED%85%8C%EB%A6%AC%EC%96%B4-%EB%B2%BD-%EB%AA%A8%ED%98%95.jpg?s=2048x2048&w=is&k=20&c=QqygEkUu1EMs_LMGq9dvyJPph4pgdlv5hmlYaAICA00=);
+        background-position: 0 0;
+        display: inline-flex;
+        background-size: contain;
+        justify-content: center;
+        height: 100vh;
+        overflow: hidden;
+        position: relative;
+
+    }
+
+    .layout.nav--active main {
+        opacity: .2;
+        user-select: none;
+    }
+
+    .layout__backdrop,
+    .layout__frontdrop {
+        background-color: rgba(0, 0, 0, .3);
+        content: '';
+        display: block;
+        height: 100%;
+        left: 0;
+        position: fixed;
+        transform-origin: 0% 50%;
+        width: 100%;
+        z-index: 0;
+    }
+
+    .layout__backdrop {
+        transform: scaleX(.34) translateX(calc(67% * 3));
+    }
+
+    .layout.nav--active .layout__frontdrop {
+        background-color: var(--ccft-cs-primary-alt);
+        visibility: visible;
+    }
+
+    .layout__frontdrop {
+        opacity: 0;
+        visibility: hidden;
+        z-index: 2;
+    }
+
+    .layout__wrapper {
+        display: grid;
+        grid-template-columns: 300px repeat(3, 1fr);
+        margin: auto;
+        height: 100%;
+    }
+
+    .layout__main {
+        transition: opacity .3s;
+        z-index: 1;
+    }
+
+    .hero {
+        padding-top: 10rem;
+    }
+
+    .hero-title {
+        color: #000000;
+        font-family: var(--ccft-ts-secondary);
+        font-weight: 400;
+        font-size: 4.75rem;
+        line-height: 1.2;
+        margin-left: auto;
+        margin-right: 5rem;
+        margin-bottom: 0;
+        position: relative;
+        width: 32.5rem;
+        z-index: 1;
+    }
+
+    .hero-title em {
+        display: block;
         font-size: 2rem;
+        font-style: normal;
+        line-height: 1.2;
+        transform: translateX(2.5rem);
+    }
+
+    .hero-text {
+        background-color: rgba(0, 0, 0, .3);
+        color: #fff;
+        font-size: .92rem;
+        line-height: 1.75;
+        margin: 0;
+        margin-left: auto;
+        margin-right: 6rem;
+        padding: 5rem 3rem 3rem;
+        transform: translateY(-3rem);
+        width: 50%;
+        z-index: 0;
+    }
+
+    .hero-text a {
+        box-shadow: 0 4px #fff;
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .hero-block--content > *:last-child {
+        margin-bottom: 0;
+    }
+
+    .layout__main {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .layout__header {
+        height: 100%;
+        z-index: 2;
+    }
+
+    .layout__header nav {
+        height: 100%;
+    }
+
+    .layout__main {
+        grid-column: span 3;
+    }
+
+    .nav {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .nav--header-1 {
+        counter-reset: n;
+        height: 100%;
+        padding: 0 2rem;
+        position: relative;
+    }
+
+    .nav--header-1 > .nav__item:not(.nav__item--home) {
+        counter-increment: n;
+    }
+
+    .nav--header-1 > .nav__item:not(.nav__item--home) > .nav__link {
+        color: var(--ccft-cs-on-surface);
+        display: block;
+        font-family: var(--ccft-ts-secondary);
+        font-size: 1.75rem;
+        line-height: 1;
+        letter-spacing: .045em;
+        padding: 1rem 1rem;
+        padding-left: 3rem;
+        padding-top: 3rem;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+        transition: transform .2s;
+        transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+        z-index: 1;
+    }
+
+    .nav--header-1 > .nav__item > .nav__link::before {
+        content: counter(n, decimal-leading-zero);
+        display: block;
+        font-family: var(--ccft-ts-primary);
+        font-size: 6rem;
+        font-weight: bold;
+        left: 0;
+        top: 0;
+        opacity: .25;
+        position: absolute;
+        transition: transform .2s;
+        z-index: -1;
+    }
+
+    .nav--header-1 > .nav__item > .nav__link:hover,
+    .nav--header-1 > .nav__item.nav__item--active > .nav__link {
+        color: var(--ccft-cs-primary);
+        transform: translateX(.5rem);
+    }
+
+    .nav--header-1 > .nav__item.nav__item--active .nav--header-2 {
+        visibility: visible;
+    }
+
+    .nav--header-1 .nav__item--home {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.145 8.633l-2.145-8.633-2.148 8.636c-.572.366-1.034.877-1.358 1.477l-8.494 1.887 8.494 1.887c.324.6.786 1.111 1.358 1.477l2.148 8.636 2.157-8.64c.571-.367 1.03-.879 1.353-1.479l8.49-1.881-8.492-1.884c-.324-.603-.788-1.116-1.363-1.483zm-2.145 5.367c-1.104 0-2-.896-2-2s.896-2 2-2 2 .896 2 2-.896 2-2 2zm7 5l-3.43-2.186c.474-.352.893-.771 1.245-1.245l2.185 3.431zm-3.521-11.882l3.521-2.117-2.119 3.519c-.386-.542-.86-1.015-1.402-1.402zm-6.955 9.767l-3.524 2.115 2.118-3.521c.387.543.862 1.018 1.406 1.406zm-1.34-8.453l-2.184-3.431 3.431 2.184c-.474.352-.894.772-1.247 1.247z" fill="rgb(255, 255, 255)" style="transform-origin: 50% 50%; transform: rotateZ(-27deg);"/></svg>');
+        background-position: 0px 50%;
+        background-repeat: no-repeat;
+        background-size: var(--ccft-brand-size) var(--ccft-brand-size);
+        margin-bottom: 60px;
+        padding: 0;
+    }
+
+    .nav--header-1 .nav__item--home > .nav__link {
+        display: block; /* Necessary for text-indent to work */
+        height: calc(var(--ccft-brand-size) + 40px);
+        text-indent: -999px;
+    }
+
+    .nav--header-2 {
+        height: 100%;
+        left: 270px;
+        opacity: 0;
+        padding: 2.5rem 5rem;
+        position: fixed;
+        top: 0;
+        visibility: hidden;
+        width: 100%;
+    }
+
+    .nav--header-2::before {
+        background-image: url('data:image/svg+xml;utf8,<svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd"><path d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z" fill="rgb(255, 255, 255)"/></svg>');
+        background-repeat: no-repeat;
+        background-size: 30px 30px;
+        content: '';
+        cursor: pointer;
+        display: block;
+        margin-bottom: 6rem;
+        height: 30px;
+        width: 30px;
+    }
+
+    .nav--header-2 > .nav__item {
+        margin-bottom: 2.75rem;
+    }
+
+    .nav--header-2 > .nav__item > .nav__link {
+        background-image: linear-gradient(to bottom, var(--ccft-cs-primary) 0%, var(--ccft-cs-primary) 100%);
+        background-position: 0 100%;
+        background-repeat: repeat-x;
+        background-size: 6px 6px;
+        color: #fff;
+        font-family: var(--ccft-ts-primary);
+        font-size: 2.75rem;
+        font-weight: bold;
+        letter-spacing: .05em;
+        text-decoration: none;
+        transition: background-size .25s, color .3s;
+    }
+    .nav--header-2 > .nav__item > .nav__link:hover {
+        background-size: 6px 50px;
+        color: #000000;
     }
 </style>
-<body>
-<div class="group_name">
-    <ul class="nav justify-content-center">
-        <li class="nav-item" style="cursor: pointer">
-            <a class="nav-link active" href="#">Home</a>
-        </li>
-        <% if(!member) { %>
-            <li class="nav-item" style="cursor: pointer">
-                <a class="nav-link" href="/resto/signup">Signup</a>
-            </li>
-            <li class="nav-item" style="cursor: pointer">
-                <a class="nav-link" href="/resto/login">Login</a>
-            </li>
-        <% } else if (member.mb_type === 'ADMIN') { %>
-            <li class="nav-item" style="cursor: pointer">
-                <a class="nav-link" href="/resto/all-restaurant">AllResto</a>
-            </li>
-            <li class="nav-item" style="cursor: pointer" onclick="return confirm('Do you want to logout?')">
-                <a class="nav-link" href="/resto/logout">Logout</a>
-            </li>
-        <% } else { %>
-            <li class="nav-item" style="cursor: pointer">
-                <a class="nav-link" href="/resto/products/menu">MyResto</a>
-            </li>
-            <li class="nav-item" style="cursor: pointer" onclick="return confirm('Do you want to logout?')">
-                <a class="nav-link" href="/resto/logout">Logout</a>
-            </li>
-        <% } %>
-    </ul>
-</div>
 
+<div class="layout">
+    <div class="layout__backdrop"></div>
+    <div class="layout__frontdrop"></div>
+    <div class="layout__wrapper">
+        <header class="layout__header">
+            <nav>
+                <ul class="nav nav--header nav--header-1">
+                    <% if(!member) { %>
+                    <li class="nav__item nav__item--about">
+                        <a class="nav__link" href="#0">home</a>
+                    </li>
+                    <li class="nav__item nav__item--clients">
+                        <a class="nav__link" href="/resto/signup">signUp</a>
+                    </li>
 
-<div class="animation-wrapper">
-    <div class="sphere-animation">
-        <svg class="sphere" viewBox="0 0 440 440" stroke="rgba(80,80,80,.35)">
-            <defs>
-                <linearGradient id="sphereGradient" x1="5%" x2="5%" y1="0%" y2="15%">
-                    <stop stop-color="#373734" offset="0%"/>
-                    <stop stop-color="#242423" offset="50%"/>
-                    <stop stop-color="#0D0D0C" offset="100%"/>
-                </linearGradient>
-            </defs>
-            <path d="M361.604 361.238c-24.407 24.408-51.119 37.27-59.662 28.727-8.542-8.543 4.319-35.255 28.726-59.663 24.408-24.407 51.12-37.269 59.663-28.726 8.542 8.543-4.319 35.255-28.727 59.662z"/>
-            <path d="M360.72 360.354c-35.879 35.88-75.254 54.677-87.946 41.985-12.692-12.692 6.105-52.067 41.985-87.947 35.879-35.879 75.254-54.676 87.946-41.984 12.692 12.692-6.105 52.067-41.984 87.946z"/>
-            <path d="M357.185 356.819c-44.91 44.91-94.376 68.258-110.485 52.149-16.11-16.11 7.238-65.575 52.149-110.485 44.91-44.91 94.376-68.259 110.485-52.15 16.11 16.11-7.239 65.576-52.149 110.486z"/>
-            <path d="M350.998 350.632c-53.21 53.209-111.579 81.107-130.373 62.313-18.794-18.793 9.105-77.163 62.314-130.372 53.209-53.21 111.579-81.108 130.373-62.314 18.794 18.794-9.105 77.164-62.314 130.373z"/>
-            <path d="M343.043 342.677c-59.8 59.799-125.292 91.26-146.283 70.268-20.99-20.99 10.47-86.483 70.269-146.282 59.799-59.8 125.292-91.26 146.283-70.269 20.99 20.99-10.47 86.484-70.27 146.283z"/>
-            <path d="M334.646 334.28c-65.169 65.169-136.697 99.3-159.762 76.235-23.065-23.066 11.066-94.593 76.235-159.762s136.697-99.3 159.762-76.235c23.065 23.065-11.066 94.593-76.235 159.762z"/>
-            <path d="M324.923 324.557c-69.806 69.806-146.38 106.411-171.031 81.76-24.652-24.652 11.953-101.226 81.759-171.032 69.806-69.806 146.38-106.411 171.031-81.76 24.652 24.653-11.953 101.226-81.759 171.032z"/>
-            <path d="M312.99 312.625c-73.222 73.223-153.555 111.609-179.428 85.736-25.872-25.872 12.514-106.205 85.737-179.428s153.556-111.609 179.429-85.737c25.872 25.873-12.514 106.205-85.737 179.429z"/>
-            <path d="M300.175 299.808c-75.909 75.909-159.11 115.778-185.837 89.052-26.726-26.727 13.143-109.929 89.051-185.837 75.908-75.908 159.11-115.778 185.837-89.051 26.726 26.726-13.143 109.928-89.051 185.836z"/>
-            <path d="M284.707 284.34c-77.617 77.617-162.303 118.773-189.152 91.924-26.848-26.848 14.308-111.534 91.924-189.15C265.096 109.496 349.782 68.34 376.63 95.188c26.849 26.849-14.307 111.535-91.923 189.151z"/>
-            <path d="M269.239 267.989c-78.105 78.104-163.187 119.656-190.035 92.807-26.849-26.848 14.703-111.93 92.807-190.035 78.105-78.104 163.187-119.656 190.035-92.807 26.849 26.848-14.703 111.93-92.807 190.035z"/>
-            <path d="M252.887 252.52C175.27 330.138 90.584 371.294 63.736 344.446 36.887 317.596 78.043 232.91 155.66 155.293 233.276 77.677 317.962 36.521 344.81 63.37c26.85 26.848-14.307 111.534-91.923 189.15z"/>
-            <path d="M236.977 236.61C161.069 312.52 77.867 352.389 51.14 325.663c-26.726-26.727 13.143-109.928 89.052-185.837 75.908-75.908 159.11-115.777 185.836-89.05 26.727 26.726-13.143 109.928-89.051 185.836z"/>
-            <path d="M221.067 220.7C147.844 293.925 67.51 332.31 41.639 306.439c-25.873-25.873 12.513-106.206 85.736-179.429C200.6 53.786 280.931 15.4 306.804 41.272c25.872 25.873-12.514 106.206-85.737 179.429z"/>
-            <path d="M205.157 204.79c-69.806 69.807-146.38 106.412-171.031 81.76-24.652-24.652 11.953-101.225 81.759-171.031 69.806-69.807 146.38-106.411 171.031-81.76 24.652 24.652-11.953 101.226-81.759 171.032z"/>
-            <path d="M189.247 188.881c-65.169 65.169-136.696 99.3-159.762 76.235-23.065-23.065 11.066-94.593 76.235-159.762s136.697-99.3 159.762-76.235c23.065 23.065-11.066 94.593-76.235 159.762z"/>
-            <path d="M173.337 172.971c-59.799 59.8-125.292 91.26-146.282 70.269-20.991-20.99 10.47-86.484 70.268-146.283 59.8-59.799 125.292-91.26 146.283-70.269 20.99 20.991-10.47 86.484-70.269 146.283z"/>
-            <path d="M157.427 157.061c-53.209 53.21-111.578 81.108-130.372 62.314-18.794-18.794 9.104-77.164 62.313-130.373 53.21-53.209 111.58-81.108 130.373-62.314 18.794 18.794-9.105 77.164-62.314 130.373z"/>
-            <path d="M141.517 141.151c-44.91 44.91-94.376 68.259-110.485 52.15-16.11-16.11 7.239-65.576 52.15-110.486 44.91-44.91 94.375-68.258 110.485-52.15 16.109 16.11-7.24 65.576-52.15 110.486z"/>
-            <path d="M125.608 125.241c-35.88 35.88-75.255 54.677-87.947 41.985-12.692-12.692 6.105-52.067 41.985-87.947C115.525 43.4 154.9 24.603 167.592 37.295c12.692 12.692-6.105 52.067-41.984 87.946z"/>
-            <path d="M109.698 109.332c-24.408 24.407-51.12 37.268-59.663 28.726-8.542-8.543 4.319-35.255 28.727-59.662 24.407-24.408 51.12-37.27 59.662-28.727 8.543 8.543-4.319 35.255-28.726 59.663z"/>
-        </svg>
+                    <li class="nav__item nav__item--contact">
+                        <a class="nav__link" href="/resto/login">login</a>
+                    </li>
+                        <% } %>
+                </ul>
+            </nav>
+        </header>
+        <main class="layout__main">
+            <section class='hero'>
+                <div class="hero-block hero-block--header">
+                    <h1 class="hero-title">
+                        RentUp <em>Navigation with Sub-navigation, a Codepen Challenge, since.2023.</em>
+
+                    </h1>
+                    <p class="hero-text">The idea was to fork a pretty basic navigation</a> and make
+                        something nice with it. The content inspired me some kind of advertising adgency with a bold
+                        navigation and a little content. Made me work on my hover and active state more than what I'm
+                        used to in those weekly challenges.</p>
+                </div>
+            </section>
+        </main>
     </div>
 </div>
 
-
 <script>
-    function fitElementToParent(el, padding) {
-        let timeout = null;
-        function resize() {
-            if (timeout) clearTimeout(timeout);
-            anime.set(el, {scale: 1});
-            let pad = padding || 0;
-            let parentEl = el.parentNode;
-            let elOffsetWidth = el.offsetWidth - pad;
-            let parentOffsetWidth = parentEl.offsetWidth;
-            let ratio = parentOffsetWidth / elOffsetWidth;
-            timeout = setTimeout(anime.set(el, {scale: ratio}), 10);
+    const items = document.querySelectorAll('.nav--header-1 > .nav__item');
+    const rootElement = document.querySelector('.layout');
+    const colors = [
+        'hsla(14, 97%, 65%, 0.4)',
+    ];
+    // Local state.
+    const state = {
+        navigationItems: {},
+        root: rootElement,
+    };
+
+    for (let navItemIndex = 0; navItemIndex < items.length; ++navItemIndex) {
+        const stateItem = {
+            color: colors[navItemIndex % colors.length],
+            element: items[navItemIndex],
+            id: navItemIndex,
+            isActive: false,
+            type: 'DEFAULT',
         }
-        resize();
-        window.addEventListener('resize', resize);
+
+        const subNav = items[navItemIndex].querySelector('.nav');
+        if (subNav) {
+            // current element has a subNav.
+            stateItem.childNavigation = subNav;
+            stateItem.type = 'PARENT';
+        }
+
+        stateItem.onClick = (event) => {
+            const actualOnClick = () => {
+                if (state.activeItem === navItemIndex) {
+                    return;
+                }
+                if (state.activeItem) {
+                    state.activeItem = null;
+                }
+
+                if ('PARENT' === state.navigationItems[navItemIndex].type) {
+                    // Set new active item.
+                    state.activeItem = navItemIndex;
+
+                    animateShow(state);
+                }
+            };
+            if (state.activeItem) {
+                return animateHide(state, actualOnClick);
+            }
+
+            return actualOnClick();
+        };
+
+        // Add this item to the state.
+        state.navigationItems[navItemIndex] = stateItem;
     }
 
-    const sphereAnimation = (function() {
+    const animateShow = (state) => {
+        const animation = anime.timeline();
+        console.log(state.navigationItems[state.activeItem]);
 
-        let sphereEl = document.querySelector(".sphere-animation");
-        let spherePathEls = sphereEl.querySelectorAll(".sphere path");
-        let pathLength = spherePathEls.length;
-        let hasStarted = false;
-        let aimations = [];
-
-        fitElementToParent(sphereEl);
-
-        let breathAnimation = anime({
-            begin: function() {
-                for (var i = 0; i < pathLength; i++) {
-                    aimations.push(anime({
-                        targets: spherePathEls[i],
-                        stroke: {value: ['rgba(255,75,75,1)', 'rgba(80,80,80,.35)'], duration: 500},
-                        translateX: [2, -4],
-                        translateY: [2, -4],
-                        easing: 'easeOutQuad',
-                        autoplay: false
-                    }));
-                }
+        animation.add({
+            backgroundColor: state.navigationItems[state.activeItem].color,
+            begin: () => {
+                state.root.classList.add('nav--active');
             },
-            update: function(ins) {
-                aimations.forEach(function(animation, i) {
-                    let percent = (1 - Math.sin((i * .35) + (.0022 * ins.currentTime))) / 2;
-                    animation.seek(animation.duration * percent);
-                });
+            complete: () => {
+                state.navigationItems[state.activeItem].element.classList.add('nav__item--active');
             },
-            duration: Infinity,
-            autoplay: false
-        });
-
-        let introAnimation = anime.timeline({
-            autoplay: false
+            duration: 450,
+            easing: 'easeOutExpo',
+            opacity: 1,
+            translateX: [
+                {delay: 300, value: '270px',},
+            ],
+            scaleX: [
+                {value: 0},
+                {value: 1},
+            ],
+            targets: '.layout__frontdrop',
         })
             .add({
-                targets: spherePathEls,
-                strokeDashoffset: {
-                    value: [anime.setDashoffset, 0],
-                    duration: 3900,
-                    easing: 'easeInOutCirc',
-                    delay: anime.stagger(190, {direction: 'reverse'})
-                },
-                duration: 2000,
-                delay: anime.stagger(60, {direction: 'reverse'}),
-                easing: 'linear'
-            }, 0);
+                duration: 70,
+                opacity: [0, 1],
+                targets: state.navigationItems[state.activeItem].childNavigation,
+            }).add({
+            delay: anime.stagger(70),
+            opacity: [0, 1],
+            translateY: ['100%', '0'],
+            targets: state.navigationItems[state.activeItem].childNavigation.querySelectorAll('.nav__item'),
+        });
 
-        let shadowAnimation = anime({
-            targets: '#sphereGradient',
-            x1: '25%',
-            x2: '25%',
-            y1: '0%',
-            y2: '75%',
-            duration: 30000,
-            easing: 'easeOutQuint',
-            autoplay: false
-        }, 0);
+        return animation;
+    };
 
-        function init() {
-            introAnimation.play();
-            breathAnimation.play();
-            shadowAnimation.play();
-        }
+    const animateHide = (state, complete) => {
+        const animation = anime.timeline({
+            complete: complete,
+        });
 
-        init();
+        animation.add({
+            duration: 210,
+            opacity: [1, 0],
+            translateY: [0, '+=50px'],
+            targets: state.navigationItems[state.activeItem].childNavigation,
+        }).add({
+            complete: () => {
+                // Clean-up current active item.
+                state.root.classList.remove('nav--active');
+                state
+                    .navigationItems[state.activeItem]
+                    .element
+                    .classList
+                    .remove('nav__item--active')
+                ;
+            },
+            duration: 250,
+            easing: 'easeOutCirc',
+            scaleX: [
+                {value: 0,},
+            ],
+            translateX: [
+                {value: 0},
+            ],
+            targets: '.layout__frontdrop',
+        });
 
+        return animation;
+    };
+
+    (() => {
+        // Ready to fight.
+        const introAnimation = anime.timeline({
+            complete: () => {
+                for (let stateItemIndex = 0; stateItemIndex < Object.values(state.navigationItems).length; ++stateItemIndex) {
+                    state.navigationItems[stateItemIndex].element.addEventListener(
+                        'click',
+                        state.navigationItems[stateItemIndex].onClick
+                    );
+
+                    // Reset transform to prevent the implicit z-index / position relative to trigger.
+                    state.navigationItems[stateItemIndex].element.style.transform = '';
+                }
+            },
+        });
+
+        introAnimation.add({
+            duration: 350,
+            delay: 1000,
+            easing: 'easeOutCirc',
+            targets: '.layout__backdrop',
+            scaleX: [0, 1],
+        }).add({
+            delay: anime.stagger(75),
+            duration: 450,
+            easing: 'easeOutCirc',
+            opacity: [0, 1],
+            translateY: ['100%', '0%'],
+            targets: '.nav--header-1 > .nav__item:not(.nav__item--home)',
+        }).add({
+            easing: 'easeOutExpo',
+            targets: '.layout__backdrop',
+            translateX: [
+                {delay: 350, value: (67) + '%'},
+            ],
+        }).add({
+            duration: 350,
+            easing: 'easeOutExpo',
+            targets: '.hero-title',
+            opacity: [0, 1],
+            translateY: ['50px', '0'],
+        }).add({
+            duration: 350,
+            easing: 'easeOutExpo',
+            targets: '.hero-text',
+            opacity: [0, 1],
+            translateY: ['0', '-3rem'],
+        }, '-=100');
     })();
-</script>
 
+</script>
 </body>
 
 <%- include("includes/footer") %>

@@ -20,7 +20,7 @@ function getTargetImageStorage(address) {
 
 const makeUploader = (address) => {
     const storage = getTargetImageStorage(address);
-    return multer({storage: storage}); //1-storage multerni talab etilgan indexi
+    return multer({storage: storage});
 
 };
 

@@ -12,7 +12,7 @@ router_bssr.get("/", companyController.home);
 router_bssr
     .get("/signup", companyController.getSignupMyCompany)
     .post(
-        "/sign-up",
+        "/signup",
         uploader("members").single("company_img")
         , companyController.signupProcess);
 
@@ -34,13 +34,13 @@ router_bssr.post("/products/edit/:id",   // oxirida : nupqda bolsa param xisobla
     companyController.validateAuthCompany,
     productController.updateChosenProduct);
 
-router_bssr.get("/all-restaurant",
+router_bssr.get("/all-company",
     companyController.validateAdmin,
     companyController.getAllCompanies);
 
 
 router_bssr.post(
-    "/all-restaurant/edit",
+    "/all-company/edit",
     companyController.validateAdmin,
     companyController.updateCompanyByAdmin
 );
