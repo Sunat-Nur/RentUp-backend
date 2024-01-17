@@ -8,7 +8,6 @@ class Product {
     constructor() {
         this.productModel = ProductModel;
     }
-
     async getAllProductsData(member, data) {
         try {
             const auth_mb_id = shapeIntoMongooseObjectId(member?._id);

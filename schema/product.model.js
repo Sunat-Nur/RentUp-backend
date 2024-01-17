@@ -9,10 +9,10 @@ const {
 const Schema = mongoose.Schema;
 
 const productSchema = new mongoose.Schema({
-        // product_name: {
-        //     type: String,
-        //     required: true,
-        // },
+        product_name: {
+            type: String,
+            required: true,
+        },
         product_collection: {
             type: String,
             required: true,
@@ -21,10 +21,14 @@ const productSchema = new mongoose.Schema({
                 message: "{VALUE} is not among permitted enum values",
             },
         },
+        product_address: {
+            type: String,
+            required: true,
+        },
         product_status: {
             type: String,
             required: false,
-            default: "ACTIVE",
+            default: "PROCESS",
             enum: {
                 values: product_status_enums,
                 message: "{VALUE} is not among permitted enum values",
@@ -38,23 +42,9 @@ const productSchema = new mongoose.Schema({
             type: Number,
             required: true,
         },
-        // product_size: {
-        //     type: String,
-        //     default: "normal",
-        //     required: function () {
-        //         const sized_list = ["Hose", "Apartment", "Office & Studio", "Villa Condo","etc"];
-        //         return sized_list.includes(this.product_collection);
-        //     },
-        //     enum: {
-        //         values: product_size_enums,
-        //         message: "{VALUE} is not among permitted enum values",
-        //     },
-        //     product_collection: () => {
-        //     }
-        // },
         product_volume: {
             type: String,
-            required: true,
+            // default: 2,
             enum: {
                 values: product_volume_enums,
                 message: "{VALUE} is not among permitted enum values",
@@ -65,7 +55,7 @@ const productSchema = new mongoose.Schema({
             required: true,
         },
         product_images: {
-            type: Array,    // birnechta rasm quyishimiz mumkin bu qiymatni quyib.
+            type: Array,
             required: false,
             default: [],
         },
@@ -80,7 +70,7 @@ const productSchema = new mongoose.Schema({
             default: 0,
         },
         company_mb_id: {
-            type: Schema.Types.ObjectId,
+            type: Schema.Types.ObjectId, // bu Schemani ichida bz hohlayotgan type bor va bu typening ichidan objectId ol deyman.
             ref: "Member",
             required: false,
         },
@@ -92,12 +82,12 @@ const productSchema = new mongoose.Schema({
 productSchema.index(
     {
         company_mb_id: 1,
-        // product_name: 1,
+        product_name: 1,
         product_size: 1,
         product_volume: 1,
     },
-    {unique: true}
-);
+    {unique: true}     //compound  unique ucun ishlatiladi
+); // index  bu: 1ta restaurant un birxil nomdagi tovarni, bir size va volume bulsa,databasega yozmasin deg.
 
 
 module.exports = mongoose.model("Product", productSchema);
