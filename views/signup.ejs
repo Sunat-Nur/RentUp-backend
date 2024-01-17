@@ -62,16 +62,26 @@
                 />
             </div>
             <div class="sign_up_frame">
-                <label>confirm password</label>
-                <input
-                        type="password"
-                        name="mb_confirm_password"
-                        class="mb_confirm_password"
-                        placeholder="confirm password"
-                        value=""
-                        required
+                <label>mb address</label>
+<!--                <input-->
+<!--                        type="password"-->
+<!--                        name="mb_confirm_password"-->
+<!--                        class="mb_confirm_password"-->
+<!--                        placeholder="confirm password"-->
+<!--                        value=""-->
+<!--                        required-->
+<!--                />-->
 
-                />
+                <select class="mb_address" name="mb_address">
+                    <option value="tashkent city">tashkent city</option>
+                    <option value="samarkand city">samarkand city</option>
+                    <option value="bukhara city">bukhara city</option>
+                    <option value="xoramz city">xoramz city</option>
+                    <option value="andijan city">andijan city</option>
+                    <option value="surkhandaryo city" selected>surkhandaryo city</option>
+                    <option value="navoiy city">navoiy city</option>
+                    <option value="namamgan city">namamgan city</option>
+                </select>
             </div>
         </div>
 
@@ -142,19 +152,16 @@
         const mb_nick = $(".mb_nick").val();
         const mb_phone = $(".mb_phone").val();
         const mb_password = $(".mb_password").val();
-        const mb_confirm_password = $(".mb_confirm_password").val();
+        const mb_address= $(".mb_address").val();
         const company_img = $('.company_img').get(0).files[0] ?? null;   // agar mavjud bolsa ozini ol yoki null qoy deyabmiz
 
         if (
             mb_nick === ''
             || mb_phone === ''
             || mb_password === ''
-            || mb_confirm_password === ''
+            || mb_address === ''
         ) {
             alert("iltimos hamma ma'lumotlarni kiriitng");
-            return false;
-        } else if (mb_password !== mb_confirm_password) {
-            alert(`iltimos passwordni to'g'ri kiriting`);
             return false;
         }
 
@@ -162,7 +169,6 @@
             alert("iltimos rasmni yuklang!");
             return false;
         }
-
         return true;
     }
 

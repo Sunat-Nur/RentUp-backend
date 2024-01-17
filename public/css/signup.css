@@ -182,6 +182,18 @@ body {
     border-radius: 8px;
 }
 
+
+.sign_up_frame select {
+    position: relative;
+    margin-top: 10px;
+    padding-left: 20px;
+    width: 100%;
+    height: 55px;
+    background: #f6f5f5;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+}
+
 .media_frame {
     position: relative;
     margin-top: 15px;
