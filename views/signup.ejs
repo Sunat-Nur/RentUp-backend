@@ -11,7 +11,6 @@
         enctype="multipart/form-data"
 >
     <div class="login_frame" style="width: 650px; height: 730px">
-
         <div class="login_top">
             <span>Sing up</span>
             <div>
@@ -63,15 +62,6 @@
             </div>
             <div class="sign_up_frame">
                 <label>mb address</label>
-<!--                <input-->
-<!--                        type="password"-->
-<!--                        name="mb_confirm_password"-->
-<!--                        class="mb_confirm_password"-->
-<!--                        placeholder="confirm password"-->
-<!--                        value=""-->
-<!--                        required-->
-<!--                />-->
-
                 <select class="mb_address" name="mb_address">
                     <option value="tashkent city">tashkent city</option>
                     <option value="samarkand city">samarkand city</option>
@@ -132,22 +122,20 @@
                         "iltimos ruxsat berilgan formatdagi rasmlarni yuklang. jpg,  jpeg, png"
                     );
                 } else {
-                    if (uploading_file) {    // aks holda uploading_file mavjud bolsa
-                        console.log(URL.createObjectURL(uploading_file));  // urlni uploading_file ga path qilyabmiz
+                    if (uploading_file) {
+                        console.log(URL.createObjectURL(uploading_file));
                         $(".upload_img_frame")
-                            .attr("src", URL.createObjectURL(uploading_file))   // sorce va qiymatini o'zgartiryabmiz
+                            .attr("src", URL.createObjectURL(uploading_file))
                             .addClass("success");
                     }
                     filename = uploading_file.name;
                 }
             }
-
-            $(this).siblings(".upload-name").val(filename);  // file nameni uploading filega tenglashtiryabmiz
+            $(this).siblings(".upload-name").val(filename);
         });
     });
 
     //4 xil validation bor
-
     function validateSignUpForm() {
         const mb_nick = $(".mb_nick").val();
         const mb_phone = $(".mb_phone").val();
@@ -164,7 +152,6 @@
             alert("iltimos hamma ma'lumotlarni kiriitng");
             return false;
         }
-
         if (!company_img) {
             alert("iltimos rasmni yuklang!");
             return false;
