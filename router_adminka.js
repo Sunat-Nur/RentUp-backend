@@ -1,7 +1,7 @@
 const express = require("express");
 const companyController = require("./controllers/companyController");
 const productController = require("./controllers/productController");
-const uploader = require("./utils/upload-multer")
+const uploader = require("./utils/upload-multer");
 const router_adminka = express.Router();
 
 /**********************************

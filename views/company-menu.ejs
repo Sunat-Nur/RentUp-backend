@@ -75,7 +75,17 @@
                     </div>
                     <div class="half_input">
                         <label>address</label>
-                        <input type="text" placeholder="address" name="product_address" class="product_address">
+                        <!--                        <input type="text" placeholder="address" name="product_address" class="product_address">-->
+                        <select class="product_address" name="product_address">
+                            <option value="tashkent">tashkent city</option>
+                            <option value="samarkand">samarkand city</option>
+                            <option value="bukhara">bukhara city</option>
+                            <option value="xoramz">xoramz city</option>
+                            <option value="andijan">andijan city</option>
+                            <option value="surkhandaryo" selected>surkhandaryo city</option>
+                            <option value="navoiy">navoiy city</option>
+                            <option value="namamgan">namamgan city</option>
+                        </select>
                     </div>
                     <input name="product_status" value="PAUSED" class="product_status" hidden>
                 </div>
@@ -233,6 +243,7 @@
             return false;
         } else return true;
     }
+
     function priewFileHandler(input, order) {
         const image_class_name = input.className;
         const file = $(`.${image_class_name}`).get(0).files[0],

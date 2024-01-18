@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const {
     product_collection_enums,
     product_status_enums,
-    product_volume_enums,
+    product_value_enums,
+    product_address_enums,
 } = require("../lib/config");
 
 const Schema = mongoose.Schema;
@@ -23,7 +24,12 @@ const productSchema = new mongoose.Schema({
         },
         product_address: {
             type: String,
-            required: true,
+            required: false,
+            default: "surkhandaryo",
+            enum: {
+                values: product_address_enums,
+                message: "{VALUE} is not among permitted values "
+            }
         },
         product_status: {
             type: String,
@@ -42,11 +48,11 @@ const productSchema = new mongoose.Schema({
             type: Number,
             required: true,
         },
-        product_volume: {
+        product_value: {
             type: String,
-            // default: 2,
+            default: 2,
             enum: {
-                values: product_volume_enums,
+                values: product_value_enums,
                 message: "{VALUE} is not among permitted enum values",
             },
         },
