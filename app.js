@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const router = require("./router");
 const router_adminka = require("./router_adminka");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 
@@ -19,6 +20,7 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('js'));
+app.use(cors({credentials: true, origin: true,}));
 app.use(cookieParser()); //
 
 // 2: Session code
