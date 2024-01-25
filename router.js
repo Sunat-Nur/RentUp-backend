@@ -52,7 +52,7 @@ router.get("/companies",
 router.get(
     "/companies/:id",
     memberController.retrieveAuthMember,
-    companyController.getCompanies
+    companyController.getChosenCompany
 );
 
 router.post(

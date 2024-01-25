@@ -95,14 +95,19 @@ memberController.getChosenMember = async (req, res) => {
         res.json({state: "fail", message: err.message});
     }
 };
-
 memberController.likenMemberChosen = async (req, res) => {
     try {
         console.log("POST cont/likeMemberChosen");
-        assert.ok(req.member, Definer.auth_err4);
-        const member = new Member();
-        const {like_ref_id, group_type} = req.body;
-        const result = await member.likeChosenItemByMember(req.member, like_ref_id, group_type);
+        assert.ok(req.member, Definer.auth_err4); // faqat authenticat bolgan userlar ishlata olishi uchun check qilyabman
+
+        const member = new Member(); // member_service modeldan instance olib yangi member object yaratyabmiz
+        const {like_ref_id, group_type} = req.body;// qanday turdagi productni like qilishni belgilab olyabman uni req.bodyni ichidan qabul qilib olyabman va group_type nomi bn send qilyabman
+
+        console.log("member::::", member);
+        console.log('like_ref_id:', like_ref_id);
+        console.log('group_type:', group_type);
+
+        const result = await member.likeChosenItemByMember(req.member, like_ref_id, group_type);    // req.member---- kim requstni qilyabdi ? id--- kimni data sini ko'rmoqchimiz ?
         res.json({state: "success", data: result});
     } catch (err) {
         console.log(`ERROR, cont/likeMemberChosen, ${err.message}`);

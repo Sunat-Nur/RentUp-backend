@@ -26,7 +26,7 @@ companyController.getChosenCompany = async (req, res) => {
         const id = req.params.id;
         company = new Company();
 
-        result = await company.getCompaniesData(req.member, id);
+        result = await company.getChosenCompanyData(req.member, id);
         res.json({state: "success", data: result});
     } catch (err) {
         console.log(`ERROR, cont/getChosenCompany, ${err.message}`);

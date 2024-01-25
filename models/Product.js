@@ -10,27 +10,29 @@ class Product {
     }
     async getAllProductsData(member, data) {
         try {
+            console.log("getAllProductsData is working");
             const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
             let match = {product_status: "PROCESS"};
             if (data.company_mb_id) {
                 match["company_mb_id"] = shapeIntoMongooseObjectId(
                     data.company_mb_id
                 );
-                match["product_collection"] = data.product_collection;
+                if (data.product_collection) {
+                    match["product_collection"] = data.product_collection;
+                }
+
             }
             const sort =
                 data.order === "product_price"
                     ? {[data.order]: 1}
                     : {[data.order]: -1};
-            // {product_price: 1 }
-            // {createdAt: -1 }
 
             const result = await this.productModel
                 .aggregate([
                     {$match: match},
                     {$sort: sort},
-                    {$skip: (data.page * 1 - 1) * data.limit},
-                    {$limit: data.limit * 1},
+                    // {$skip: (data.page * 1 - 1) * data.limit},
+                    // {$limit: data.limit * 1},
                     lookup_auth_member_liked(auth_mb_id),
                 ])
                 .exec();
@@ -44,6 +46,7 @@ class Product {
 
     async getChosenProductData(member, id) {
         try {
+            console.log("getChosenProductData is working");
             const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
             id = shapeIntoMongooseObjectId(id);
             if (member) {
