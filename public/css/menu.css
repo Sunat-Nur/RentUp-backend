@@ -197,13 +197,13 @@ input:checked + .slider:before {
     flex-direction: row;
     justify-content: space-between;
 }
-.long_input  {
-    /*position: relative;*/
-    /*width: 49%;*/
-    /*height: auto;*/
-    /*display: flex;*/
-    /*flex-direction: column;*/
-}
+/*.long_input  {*/
+/*    position: relative;*/
+/*    width: 49%;*/
+/*    height: auto;*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*}*/
 
 .login_input_frame {
     position: relative;
@@ -383,4 +383,17 @@ input:checked + .slider:before {
     top: 0px;
     height: 100%;
     cursor: pointer;
+}
+
+
+
+.event .media-frame {
+    display: flex;
+    gap: 100px;
+    align-items: center;
+    justify-content: center;
+}
+.event .media-frame .thumbnail_desc {
+    color: white;
+    line-height: 40px;
 }

@@ -1,6 +1,7 @@
 const express = require("express");
 const companyController = require("./controllers/companyController");
 const productController = require("./controllers/productController");
+const eventController = require("./controllers/eventController");
 const uploader = require("./utils/upload-multer");
 const router_adminka = express.Router();
 
@@ -43,6 +44,22 @@ router_adminka.post(
     "/all-company/edit",
     companyController.validateAdmin,
     companyController.updateCompanyByAdmin
+);
+
+
+router_adminka.get("/events/menu", companyController.getMyCompanyEvents);
+
+router_adminka.post(
+    "/events/create",
+    companyController.validateAuthCompany,
+    uploader("events").single("event_images"),
+    eventController.addNewEvent
+);
+
+router_adminka.post(
+    "/events/edit/:id",
+    companyController.validateAuthCompany,
+    eventController.updateChosenEvent
 );
 
 

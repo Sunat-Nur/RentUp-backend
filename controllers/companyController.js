@@ -61,6 +61,20 @@ companyController.getMyCompaniesProducts = async (req, res) => {
     }
 }
 
+companyController.getMyCompanyEvents = async (req, res) => {
+    try {
+        console.log("GET: cont/getMyCompaniesEvents");
+        const event = new Event();
+        const data = await event.getMyCompanyEventsData(req.session.member);
+        res.render("my-events", { my_events_data: data });
+    } catch (err) {
+        console.log(`ERROR: cont/getMyCompaniesEvents, ${err.message}`);
+        res.redirect("/house");
+    }
+}
+
+
+
 companyController.getSignupMyCompany = async (req, res) => {
     try {
         console.log("GET: cont/getSignupMyCompany");
