@@ -1,6 +1,7 @@
 console.log("web serverni boshladik");
 const express = require("express");
 const app = express();
+const http = require("http");
 const router = require("./router");
 const router_adminka = require("./router_adminka");
 const cors = require("cors");
@@ -42,14 +43,40 @@ app.use(function (req, res, next) {
 })
 
 // 3: Views code
-
 app.set("views", "views");
 app.set("view engine", "ejs",);
 
 //4: routing code
-
 app.use("/resto", router_adminka);
 app.use("/", router);
 
 
-module.exports = app;
+const server = http.createServer(app);
+
+const io = require("socket.io")(server, {
+    serveClient: false,
+    origin: "*:*",
+    transport: ["websocket", "xhr-polling"],
+});
+
+let online_users = 0;
+io.on("connection", function (socket) {
+    online_users++;
+    console.log("New user, total:", online_users);
+    socket.emit("greetMsg", {text: "welcome"});
+    io.emit("infoMsg", {total: online_users});
+
+    socket.on("disconnect", function () {
+        online_users--;
+        socket.broadcast.emit("infoMsg", {total: online_users});
+        console.log("client disconnected, total", online_users);
+    });
+
+    socket.on("createMsg", function (data) {
+        console.log("createMsg", data);
+        io.emit("newMsg", data);
+    });
+})
+
+
+module.exports = server;

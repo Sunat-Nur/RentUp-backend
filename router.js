@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const memberController = require("./controllers/memberController");
+const commentController = require("./controllers/commentController");
 const productController = require("./controllers/productController");
 const companyController = require("./controllers/companyController");
 const orderController = require("./controllers/orderController");
@@ -151,6 +152,34 @@ router.get(
     memberController.retrieveAuthMember,
     followController.getMemberFollowers
 );
+
+
+/**********************************
+ * Comment related routers        *
+ **********************************/
+
+router.post(
+    "/comments/create",
+    memberController.retrieveAuthMember,
+    commentController.createComment
+);
+
+router.post(
+    "/reply/comments",
+    memberController.retrieveAuthMember,
+    commentController.replyComment
+);
+
+router.get(
+    "/comments",
+    memberController.retrieveAuthMember,
+    commentController.getAllComment
+);
+
+
+
+
+
 
 module.exports = router;
 
