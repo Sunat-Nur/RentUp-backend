@@ -43,9 +43,9 @@
                         <td><%= new Date(value.event_date).toLocaleDateString() %></td>
                         <td>
                             <select class="spec_select new_event_status" id="<%= value._id %>">
-                                <option value="Active" <%= value.event_status === 'Active' ? 'selected' : '' %> > Active
+                                <option value="active" <%= value.event_status === 'active' ? 'selected' : '' %> > Active
                                 </option>
-                                <option value="Deleted" <%= value.event_status === 'Deleted' ? 'selected' : '' %> >
+                                <option value="deleted" <%= value.event_status === 'deleted' ? 'selected' : '' %> >
                                     Deleted
                                 </option>
                             </select>
@@ -79,7 +79,7 @@
                     </div>
                     <input
                             name="event_status"
-                            value="Active"
+                            value="active"
                             class="event_status"
                             hidden
                     />
