@@ -28,9 +28,7 @@ const commentController = {
             const { member, body } = req;
             const comment = new Comment();
             const result = await comment.replyCommentData(member, body);
-
             assert.ok(result, Definer.general_err1);
-
             res.json({ state: "success", data: result });
         } catch (err) {
             console.log(`ERROR, cont/replyComment, ${err.message}`);
@@ -44,9 +42,7 @@ const commentController = {
 
             const { member, query, comment_id } = req;
             const comment = new Comment();
-
             const result = await comment.getAllCommentData(member, query, comment_id);
-
             assert.ok(result, Definer.general_err1);
 
             res.json({ state: "success", data: result });

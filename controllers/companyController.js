@@ -1,6 +1,7 @@
 const Product = require("../models/Product");
 const Member = require("../models/Member");
 const MemberModel = require("../schema/member.model");
+const Event = require("../models/Event");
 const Company = require("../models/Company")
 const Definer = require("../lib/error");
 const assert = require("assert");
@@ -63,12 +64,12 @@ companyController.getMyCompaniesProducts = async (req, res) => {
 
 companyController.getMyCompanyEvents = async (req, res) => {
     try {
-        console.log("GET: cont/getMyCompaniesEvents");
+        console.log("GET: cont/getMyCompanyEvents");
         const event = new Event();
         const data = await event.getMyCompanyEventsData(req.session.member);
-        res.render("my-events", { my_events_data: data });
+        res.render("events", { events_data: data });
     } catch (err) {
-        console.log(`ERROR: cont/getMyCompaniesEvents, ${err.message}`);
+        console.log(`ERROR: cont/getMyCompanyEvents, ${err.message}`);
         res.redirect("/house");
     }
 }

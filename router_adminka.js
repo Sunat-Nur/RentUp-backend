@@ -47,21 +47,24 @@ router_adminka.post(
 );
 
 
-router_adminka.get("/events/menu", companyController.getMyCompanyEvents);
+router_adminka.get(
+    "/events/menu",
+    companyController.getMyCompanyEvents
+);
 
 router_adminka.post(
     "/events/create",
     companyController.validateAuthCompany,
-    uploader("events").single("event_images"),
+    uploader("events").single("event_image"),
     eventController.addNewEvent
 );
+
 
 router_adminka.post(
     "/events/edit/:id",
     companyController.validateAuthCompany,
     eventController.updateChosenEvent
 );
-
 
 
 // export router

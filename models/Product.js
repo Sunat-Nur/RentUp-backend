@@ -33,10 +33,14 @@ class Product {
                     {$sort: sort},
                     // {$skip: (data.page * 1 - 1) * data.limit},
                     // {$limit: data.limit * 1},
+
+
+                    // { $skip: (data["page"] * 1 - 1) * data.limit },
+                    // { $limit: data["limit"] * 1 },
                     lookup_auth_member_liked(auth_mb_id),
                 ])
                 .exec();
-            console.log(result);
+            console.log("result0",result[0]);
             assert.ok(result, Definer.general_err1);
             return result;
         } catch (err) {

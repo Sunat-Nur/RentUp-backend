@@ -231,7 +231,7 @@ input:checked + .slider:before {
 
 .half_input_frame .half_input {
     position: relative;
-    width: 49%;
+    width: 600px;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -299,6 +299,22 @@ input:checked + .slider:before {
     color: #4F547B;
 }
 
+.table table-bordered table-hover {
+    margin-top: 100px;
+}
+
+.half_input {
+    width: 400px;
+}
+
+
+.new_furniture_txt_user {
+    margin-left: 360px;
+    position: relative;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
 .long_input textarea {
     position: relative;
     margin-top: 10px;
@@ -342,7 +358,6 @@ input:checked + .slider:before {
     margin-top: 10px;
     width: 100%;
     height: 250px;
-
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -354,21 +369,24 @@ input:checked + .slider:before {
     height: 100%;
 
     display: flex;
-    justify-content: center;
-    /*align-items: center;*/
+    /*justify-content: center;*/
     border-radius: 10px;
     border: 1px solid white;
-    /*background: white;*/
     cursor: pointer;
 }
 
+.company_table span{
+    margin-left: 370px;
+    position: relative;
+    align-items: center;
+}
+
+
 .upload_img_box {
     position: relative;
-    width: 100%;
-    height: 100%;
-
+    width: 230px;
+    height: 100px;
     display: block;
-    border-radius: 10px;
     border-color: #efefee;
 }
 

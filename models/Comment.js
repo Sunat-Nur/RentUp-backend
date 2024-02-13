@@ -1,8 +1,5 @@
 const assert = require("assert");
-const {
-    shapeIntoMongooseObjectId,
-    lookup_auth_member_liked,
-} = require("../lib/config");
+const {shapeIntoMongooseObjectId, lookup_auth_member_liked,} = require("../lib/config");
 const Definer = require("../lib/error");
 const commentModel = require("../schema/comment.model");
 const replyCommentModel = require("../schema/replyComment.model");
@@ -23,7 +20,6 @@ class Comment {
     async saveCommentData(data) {
         try {
             const comment = new commentModel(data);
-
             return await comment.save();
         } catch (mongo_err) {
             console.log(mongo_err);
@@ -55,13 +51,23 @@ class Comment {
 
     async getAllCommentData(member, query) {
         try {
+            // const product_id = shapeIntoMongooseObjectId(query?.id);
+            // const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
+
+            // Log the values of query?.id and member?._id
+            console.log("query?.id:", query?.id);
+            console.log("member?._id:", member?._id);
+
             const product_id = shapeIntoMongooseObjectId(query?.id);
             const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
+
+            // Log the converted values
+            console.log("Converted product_id:", product_id);
+            console.log("Converted auth_mb_id:", auth_mb_id);
 
             const result = await commentModel
                 .aggregate([
                     { $match: { comment_ref_id: product_id } },
-
                     {
                         $lookup: {
                             from: "replycomments",
@@ -73,8 +79,7 @@ class Comment {
                     lookup_auth_member_liked(auth_mb_id),
                 ])
                 .exec();
-
-            assert.ok(result, "no  found comment for that member!");
+            assert.ok(result, "member comment not found!");
 
             return result;
         } catch (err) {
