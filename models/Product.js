@@ -8,6 +8,7 @@ class Product {
     constructor() {
         this.productModel = ProductModel;
     }
+
     async getAllProductsData(member, data) {
         try {
             console.log("getAllProductsData is working");
@@ -20,33 +21,28 @@ class Product {
                 if (data.product_collection) {
                     match["product_collection"] = data.product_collection;
                 }
-
             }
             const sort =
                 data.order === "product_price"
                     ? {[data.order]: 1}
                     : {[data.order]: -1};
-
             const result = await this.productModel
                 .aggregate([
                     {$match: match},
                     {$sort: sort},
-                    // {$skip: (data.page * 1 - 1) * data.limit},
-                    // {$limit: data.limit * 1},
-
-
-                    // { $skip: (data["page"] * 1 - 1) * data.limit },
-                    // { $limit: data["limit"] * 1 },
+                    {$skip: (data.page * 1 - 1) * data.limit},
+                    {$limit: data.limit * 1},
                     lookup_auth_member_liked(auth_mb_id),
                 ])
                 .exec();
-            console.log("result0",result[0]);
+            console.log("result0", result[0]);
             assert.ok(result, Definer.general_err1);
             return result;
         } catch (err) {
             throw err;
         }
     };
+
 
     async getChosenProductData(member, id) {
         try {

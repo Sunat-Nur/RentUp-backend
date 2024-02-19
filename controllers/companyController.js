@@ -70,7 +70,7 @@ companyController.getMyCompanyEvents = async (req, res) => {
         res.render("events", { events_data: data });
     } catch (err) {
         console.log(`ERROR: cont/getMyCompanyEvents, ${err.message}`);
-        res.redirect("/house");
+        res.redirect("/home");
     }
 }
 

@@ -51,9 +51,6 @@ class Comment {
 
     async getAllCommentData(member, query) {
         try {
-            // const product_id = shapeIntoMongooseObjectId(query?.id);
-            // const auth_mb_id = shapeIntoMongooseObjectId(member?._id);
-
             // Log the values of query?.id and member?._id
             console.log("query?.id:", query?.id);
             console.log("member?._id:", member?._id);

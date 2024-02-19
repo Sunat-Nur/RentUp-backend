@@ -89,7 +89,6 @@ class Event {
                 ])
                 .exec();
             assert.ok(result, Definer.article_err3);
-
             return result;
         } catch (err) {
             throw err;

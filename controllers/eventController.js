@@ -37,5 +37,23 @@ const eventController = {
             res.json({ state: "fail", message: err.message });
         }
     },
+
+
+    getCompanyEvents: async (req, res) => {
+        try {
+            console.log(`GET: cont/getCompanyEvents`);
+
+            const { member, query } = req;
+            const event = new Event();
+            const result = await event.getCompanyEventsData(member, query);
+
+            assert.ok(result, Definer.general_err1);
+
+            res.json({ state: "success", data: result });
+        } catch (err) {
+            console.log(`ERROR, cont/getCompanyEvents, ${err.message}`);
+            res.json({ state: "fail", message: err.message });
+        }
+    },
 };
 module.exports = eventController;
