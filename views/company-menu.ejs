@@ -1,0 +1,271 @@
+<%- include('includes/header') %>
+
+<link rel="stylesheet" type="text/css" href="/css/menu.css"/>
+<body>
+<div id="main_container">
+    <div class="group_name">
+        <ul class="nav justify-content-center">
+            <li class="nav-item" style="cursor: pointer">
+                <a class="nav-link active" style="color: #E3C08D; font-size: 30px" href="/resto"> home</a>
+            </li>
+            <li class="nav-item" style="cursor: pointer; font-size: 30px">
+                <a class="nav-link" style="color: #E3C08D" href="/resto/products/menu">my page</a>
+            </li>
+            <li class="nav-item" style="cursor: pointer; font-size: 30px">
+                <a class="nav-link"   style="color: #E3C08D" href="/resto/events/menu">my events</a>
+            </li>
+            <li class="nav-item" style="cursor: pointer">
+                <a class="nav-link" style="color: #E3C08D; font-size: 30px" href="/resto/logout">logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="company_menu_frame">
+        <div class="company_container">
+            <div class="dishs_table">
+                     <span class="mb_dish-txt">
+                         <%= member.mb_nick.toUpperCase() %> Agency
+                     </span>
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-light">
+                    <th scope="col">T/r</th>
+                    <th scope="col">name</th>
+                    <th scope="col">type</th>
+                    <th scope="col">size / kv</th>
+                    <th scope="col">price $</th>
+                    <th scope="col">status</th>
+                    </thead>
+
+                    <% company_data.map((value, key) => { %>
+                        <tbody style="background-color: white">
+                        <td><%= key + 1 %></td>
+                        <td><%= value.product_name %></td>
+                        <td><%= value.product_collection %></td>
+                        <td><%= value.product_size %></td>
+                        <td><%= value.product_price %></td>
+                        <td>
+                            <select class="spec_select new_product_status" id="<%= value._id %>">
+                                <option value="PAUSED" <%= value.product_status === "PAUSED" ? 'selected' : '' %> >
+                                    PAUSED
+                                </option>
+                                <option value="PROCESS" <%= value.product_status === "PROCESS" ? 'selected' : '' %> >
+                                    PROCESS
+                                </option>
+                            </select>
+                        </td>
+                        </tbody>
+                    <% }); %>
+                </table>
+
+
+                <div class="long_input" style="align-items: flex-end; margin-bottom: 25px;">
+                    <button class="btn btn-primary hiding_btn">add</button>
+                </div>
+
+            </div>
+
+            <form onsubmit="return validateForm()" action="/resto/products/create" method="POST"
+                  class="dish_container" enctype="multipart/form-data">
+
+                <div class="long_input" style="display: flex; align-items: center; margin-bottom: 25px;">
+                    <span class="new_dish_txt">new property</span>
+                </div>
+
+                <div class="half_input_frame">
+                    <div class="half_input">
+                        <label>name building</label>
+                        <input type="text" placeholder="name of building" name="product_name" class="product_name">
+                    </div>
+                    <div class="half_input">
+                        <label>address</label>
+                        <!--                        <input type="text" placeholder="address" name="product_address" class="product_address">-->
+                        <select class="product_address" name="product_address">
+                            <option value="tashkent">tashkent city</option>
+                            <option value="samarkand">samarkand city</option>
+                            <option value="bukhara">bukhara city</option>
+                            <option value="xoramz">xoramz city</option>
+                            <option value="andijan">andijan city</option>
+                            <option value="surkhandaryo" selected>surkhandaryo city</option>
+                            <option value="navoiy">navoiy city</option>
+                            <option value="namamgan">namamgan city</option>
+                        </select>
+                    </div>
+                    <input name="product_status" value="PAUSED" class="product_status" hidden>
+                </div>
+
+                <div class="half_input_frame">
+                    <div class="half_input">
+                        <label>prise</label>
+                        <input type="number" placeholder="rent prise" name="product_price" class="product_price">
+                    </div>
+                    <div class="half_input">
+                        <label>size of property</label>
+                        <input type="number" placeholder="size of property" name="product_size"
+                               class="product_left_cnt">
+                    </div>
+                </div>
+
+                <div class="half_input_frame">
+
+                    <div class="half_input">
+                        <label>type of property</label>
+                        <select class="product_collection" name="product_collection">
+                            <option value="Hose">Hose</option>
+                            <option value="Apartment" selected>Apartment</option>
+                            <option value="Office">Office</option>
+                            <option value="Villa">Villa</option>
+                            <option value="studio">studio</option>
+                            <option value="">etc</option>
+                        </select>
+                    </div>
+
+
+                    <div class="half_input" id="product_enum">
+                        <label>cnt of room</label>
+                        <select class="product_enum" name="product_enum">
+                            <option value="1">1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="long_input">
+                    <label>information</label>
+                    <textarea name="product_description" class="product_description"></textarea>
+                </div>
+
+                <div class="img_frame">
+                    <label>images</label>
+                    <div class="media_frame">
+
+                        <div class="upload_img_box">
+                            <img src="/images/upload.png" class="1" id="image_section_1" alt="">
+                            <input type="file" id="file" name="product_images" class="image_one"
+                                   onchange="priewFileHandler(this, 1)">
+                        </div>
+                        <div class="upload_img_box">
+                            <img src="/images/upload.png" class="2" id="image_section_2" alt="">
+                            <input type="file" id="file" name="product_images" class="image_two"
+                                   onchange="priewFileHandler(this, 2)">
+                        </div>
+
+                        <div class="upload_img_box">
+                            <img src="/images/upload.png" class="3" id="image_section_3" alt="">
+                            <input type="file" id="file" name="product_images" class="image_three"
+                                   onchange="priewFileHandler(this, 3)">
+                        </div>
+                        <div class="upload_img_box">
+                            <img src="/images/upload.png" class="4" id="image_section_4" alt="">
+                            <input type="file" id="file" name="product_images" class="image_four"
+                                   onchange="priewFileHandler(this, 4)">
+                        </div>
+                        <div class="upload_img_box">
+                            <img src="/images/upload.png" class="5" id="image_section_5" alt="">
+                            <input type="file" id="file" name="product_images" class="image_five"
+                                   onchange="priewFileHandler(this, 5)">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="long_input" style="align-items: flex-end; margin-bottom: 25px">
+                    <button type="submit" class="btn btn-primary" id="create_product">submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+
+        // $(".product_collection").on("change", () => {
+        //     const selected_value = $(".product_collection").val();
+        //     if (selected_value === 'drink') {
+        //         $("#product_volume").show();
+        //         $("#product_size").hide();
+        //     } else {
+        //         $("#product_volume").hide();
+        //         $("#product_size").show();
+        //     }
+        // })
+
+        $(".hiding_btn").on("click", () => {
+            $(".dish_container").slideToggle(500);
+            $(".hiding_btn").css("display", "none");
+        })
+
+        $(".new_product_status").on("change", async function (e) {
+
+            const id = e.target.id;
+            const product_status = $(`#${id}.new_product_status`).val();
+
+            try {
+                const response = await axios.post(
+                    `/resto/products/edit/${id}`,
+                    {id: id, product_status: product_status});
+                const result = response.data;
+                console.log("result:", result);
+
+                if (result.state === 'success') {
+                    alert('success');
+                    location.reload();
+                } else {
+                    alert(result.message);
+                }
+            } catch (err) {
+                console.log('updateChosenProduct err:', err);
+            }
+        })
+    });
+
+    function validateForm() {
+        const company_mb_id = $(".company_mb_id").val(),
+            product_name = $(".product_name").val(),
+            product_address = $(".product_address").val(),
+            product_price = $(".product_price").val(),
+            product_size = $(".product_size").val(),
+            product_collection = $(".product_collection").val(),
+            product_description = $(".product_description").val(),
+            product_status = $(".product_status").val();
+
+        if (
+            company_mb_id === '' ||
+            product_name === '' ||
+            product_address === '' ||
+            product_price === '' ||
+            product_size === '' ||
+            product_collection === '' ||
+            product_description === '' ||
+            product_status === '') {
+            alert(`Iltimos hamma ma'lumotlarni kiriting`);
+            return false;
+        } else return true;
+    }
+
+    function priewFileHandler(input, order) {
+        const image_class_name = input.className;
+        const file = $(`.${image_class_name}`).get(0).files[0],
+            fileType = file['type'],
+            validImagesTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+
+        if (!validImagesTypes.includes(fileType)) {
+            alert('iltimos ruhsat etilgan formatdagi rasmlarni yuklang! (jpg, jpeg, png)');
+        } else {
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function () {
+                    $(`#image_section_${order}`).attr("src", reader.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+</script>
+</body>
+
+<%- include("includes/footer") %>

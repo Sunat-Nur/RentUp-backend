@@ -1,0 +1,227 @@
+<%- include('includes/header') %>
+
+<link rel="stylesheet" type="text/css" href="/css/menu.css"/>
+<body>
+<div id="main_container">
+    <div class="group_name">
+        <ul class="nav justify-content-center">
+            <li class="nav-item pointer">
+                <a class="nav-link active" style="color: #E3C08D; font-size: 30px" href="/resto"> home</a>
+            </li>
+            <li class="nav-item pointer">
+                <a class="nav-link" style="color: #E3C08D" href="/resto/products/menu">my page</a>
+            </li>
+            <li class="nav-item pointer">
+                <a class="nav-link" style="color: #E3C08D; font-size: 30px" href="/resto/logout">logout</a>
+            </li>
+        </ul>
+    </div>
+    <div class="company_menu_frame">
+        <div class="company_container">
+            <div class="company_table">
+          <span class="new_company_txt_user">
+            <%= member.mb_nick.toUpperCase() %> events Menu
+          </span>
+                <table class="table table-bordered table-hover" style="margin-top: 60px">
+                    <thead class="thead-light">
+                    <th scope="col">T/r</th>
+                    <th scope="col">Event title</th>
+                    <th scope="col">Event description</th>
+                    <th scope="col">Event location</th>
+                    <th scope="col">Event date</th>
+                    <th scope="col">Event status</th>
+                    </thead>
+                    <% events_data.map((value, key)=>{ %>
+
+                        <tbody class="bg-white">
+                        <td><%= key + 1 %></td>
+                        <td><%= value.event_title %></td>
+                        <td><%= value.event_description %></td>
+                        <td>
+                            <%= value.event_location %>
+                        </td>
+                        <td><%= new Date(value.event_date).toLocaleDateString() %></td>
+                        <td>
+                            <select class="spec_select new_event_status" id="<%= value._id %>">
+                                <option value="active" <%= value.event_status === 'active' ? 'selected' : '' %> > Active
+                                </option>
+                                <option value="deleted" <%= value.event_status === 'deleted' ? 'selected' : '' %> >
+                                    Deleted
+                                </option>
+                            </select>
+                        </td>
+                        </tbody>
+                    <% }); %>
+                </table>
+                <div class="long_input align-items-end mb-5">
+                    <button class="btn btn-primary hiding_btn">Close bottom</button>
+                </div>
+            </div>
+            <form
+                    action="/resto/events/create"
+                    method="POST"
+                    onsubmit="return validateForm()"
+                    class="furniture_container"
+                    enctype="multipart/form-data"
+            >
+                <div class="long_input align-items-center d-flex mb-5">
+                    <span class="new_furniture_txt">New Event</span>
+                </div>
+                <div class="half_input_frame">
+                    <div class="half_input">
+                        <label for="">Event title</label>
+                        <input
+                                type="text"
+                                placeholder="Event title"
+                                name="event_title"
+                                class="event_title"
+                        />
+                    </div>
+                    <input
+                            name="event_status"
+                            value="active"
+                            class="event_status"
+                            hidden
+                    />
+
+                    <div class="half_input">
+                        <label for="">Event location</label>
+                        <input
+                                type="text"
+                                placeholder="Event location"
+                                name="event_location"
+                                class="event_location"
+                        />
+                    </div>
+
+
+                    <div class="half_input_frame">
+                        <div class="half_input">
+                            <label for="event description">Event description</label>
+                            <textarea
+                                    name="event_description"
+                                    class="event_description"
+                                    id=""
+                                    cols="30"
+                                    rows="10"
+                            ></textarea>
+                        </div>
+                        <div class="half_input">
+
+                            <label for="eventDate">Event date</label>
+                            <input type="date" id="eventDate" name="eventDate">
+                        </div>
+                    </div>
+                </div>
+                <div class="img_frame event">
+                    <label for="">Event photo</label>
+                    <div class="media-frame">
+                        <div class="upload_img_box">
+                            <img
+                                    src="/images/upload.png"
+                                    alt=""
+                                    class="img_1"
+                                    id="image_section_1"
+                            />
+                            <input
+                                    type="file"
+                                    id="file"
+                                    name="event_image"
+                                    class="image_one"
+                                    onchange="previewFileHander(this,1)"
+                            />
+
+                        </div>
+                        <p class="thumbnail_desc">
+                            Download photo. <br/>required: .jpg, .jpeg, or
+                            .png. <br/>
+                        </p>
+                    </div>
+                    <input
+                            value="<%= member._id %>"
+                            name="company_mb_id"
+                            class="company_mb_id"
+                            hidden
+                    />
+                </div>
+                <div class="long_input align-items-end mb-5">
+                    <button type="submit" id="create_event" class="btn btn-primary">
+                        Add
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+
+        $(".hiding_btn").on("click", () => {
+            $(".hiding_btn").css("display", "none");
+            $(".furniture_container").slideToggle(500).show();
+        });
+    });
+
+
+    // event status changer
+    $(".new_event_status").on("change", async function (e) {
+        const id = e.target.id;
+        const event_status = $(`#${id}.new_event_status`).val();
+        try {
+            const response = await axios.post(`/resto/events/edit/${id}`, {
+                id: id,
+                event_status: event_status,
+            });
+            const result = response.data;
+
+            if (result.state == "success") {
+                alert("success");
+                location.reload();
+            } else {
+                alert(result.message);
+            }
+        } catch (err) {
+            console.log("updateChosenEvent", err);
+        }
+    });
+
+    function validateForm() {
+        const company_mb_id = $(".company_mb_id").val(),
+            event_title = $(".event_title").val(),
+            event_location = $(".event_location").val(),
+            event_description = $(".event_description").val(),
+            event_status = $(".new_event_status").val();
+        event_date = $("#eventDate").val();
+        if (
+            company_mb_id === "" ||
+            event_title === "" ||
+            event_description === "" ||
+            event_location === "" ||
+            event_status === "" || event_date === ""
+        ) {
+
+            alert("Please fill out all required fields!");
+            return false;
+        } else return true;
+    }
+
+    function previewFileHander(input, order) {
+        const image_class_name = input.className;
+        const file = $(`.${image_class_name}`).get(0).files[0],
+            fileType = file["type"],
+            validImageTypes = ["image/jpg", "image/jpeg", "image/png"];
+        if (!validImageTypes.includes(fileType)) {
+            alert("Upload image format in the  list: (jpeg, png, jpg)");
+        } else {
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function () {
+                    $(`#image_section_${order}`).attr("src", reader.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+</script>
+</body>
+<%- include('includes/footer') %>

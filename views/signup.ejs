@@ -1,0 +1,165 @@
+<%- include("includes/header") %>
+
+<link rel="stylesheet" type="text/css" href="/css/signup.css">
+
+<body>
+<form
+        onsubmit="return validateSignUpForm()"
+        class="singup_container"
+        action="/resto/signup"
+        method="POST"
+        enctype="multipart/form-data"
+>
+    <div class="login_frame" style="width: 650px; height: 730px">
+        <div class="login_top">
+            <span>Sing up</span>
+            <div>
+                Bosh sahifaga qaytish
+                <a href="/resto" style="color: #6440fb">Home</a>
+            </div>
+            <p>
+                Ro'yhatdan allaqachon o'tganmisiz?
+                <a href="/resto/login" style="color: #6440fb">Login</a>
+            </p>
+        </div>
+
+        <div class="sign-input_frame">
+            <div class="sign_up_frame">
+                <label>user name</label>
+                <input
+                        type="text"
+                        name="mb_nick"
+                        class="mb_nick"
+                        placeholder="user name"
+                        value=""
+                        required
+                />
+            </div>
+            <div class="sign_up_frame">
+                <label>phone</label>
+                <input
+                        type="text"
+                        name="mb_phone"
+                        class="mb_phone"
+                        placeholder="phone"
+                        value=""
+                        required
+                />
+            </div>
+        </div>
+
+        <div class="sign-input_frame">
+            <div class="sign_up_frame">
+                <label>Password</label>
+                <input
+                        type="password"
+                        name="mb_password"
+                        class="mb_password"
+                        placeholder="input password"
+                        value=""
+                        required
+                />
+            </div>
+            <div class="sign_up_frame">
+                <label>mb address</label>
+                <select class="mb_address" name="mb_address">
+                    <option value="tashkent">tashkent</option>
+                    <option value="samarkand">samarkand</option>
+                    <option value="bukhara">bukhara</option>
+                    <option value="xoramz">xoramz</option>
+                    <option value="andijan">andijan</option>
+                    <option value="surkhandaryo" selected>surkhandaryo</option>
+                    <option value="navoiy">navoiy</option>
+                    <option value="namamgan">namamgan</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="login_input_frame">
+            <div class="media_frame">
+                <img class="upload_img_frame" src="/images/home3.png"/>
+                <div class="upload_container">
+                    <span class="media_text">upload lagotip</span>
+                    <div class="filebox bs3-primary preview-image">
+                        <input
+                                class="upload-name"
+                                value="choose file"
+                                disabled="disabled"
+                        />
+                        <label for="input_file"> upload </label>
+                        <input
+                                type="file"
+                                id="input_file"
+                                name="company_img"
+                                class="upload-hidden form-control-file company_img"
+                        />
+                    </div>
+                    <p class="thumbnail_desc">
+                        Please upload picture of company<br/> Notice: only type: .jpg,
+                        .jpeg yoki .png. <br/>rasmda matn yo'q bo'lishi kerak!
+                    </p>
+                </div>
+            </div>
+        </div>
+        <button class="login_btn btn" name="signup" type="submit">
+            Submit
+        </button>
+    </div>
+</form>
+</body>
+
+<script>
+    $(function () {
+        let fileTarget = $(".filebox .upload-hidden");
+        let filename = "";
+        fileTarget.on("change", function () {
+            if (window.FileReader) {
+                const uploading_file = $(this) [0].files[0];
+                const fileType = uploading_file["type"];
+                const validImagesTypes = ["image/jpg", "image/jpeg", "image/png",];
+                if (!validImagesTypes.includes(fileType)) {
+                    alert(
+                        "iltimos ruxsat berilgan formatdagi rasmlarni yuklang. jpg,  jpeg, png"
+                    );
+                } else {
+                    if (uploading_file) {
+                        console.log(URL.createObjectURL(uploading_file));
+                        $(".upload_img_frame")
+                            .attr("src", URL.createObjectURL(uploading_file))
+                            .addClass("success");
+                    }
+                    filename = uploading_file.name;
+                }
+            }
+            $(this).siblings(".upload-name").val(filename);
+        });
+    });
+
+    //4 xil validation bor
+    function validateSignUpForm() {
+        const mb_nick = $(".mb_nick").val();
+        const mb_phone = $(".mb_phone").val();
+        const mb_password = $(".mb_password").val();
+        const mb_address= $(".mb_address").val();
+        const company_img = $('.company_img').get(0).files[0] ?? null;   // agar mavjud bolsa ozini ol yoki null qoy deyabmiz
+
+        if (
+            mb_nick === ''
+            || mb_phone === ''
+            || mb_password === ''
+            || mb_address === ''
+        ) {
+            alert("iltimos hamma ma'lumotlarni kiriitng");
+            return false;
+        }
+        if (!company_img) {
+            alert("iltimos rasmni yuklang!");
+            return false;
+        }
+        return true;
+    }
+
+
+</script>
+
+<%- include("includes/footer") %>
