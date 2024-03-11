@@ -1,0 +1,25 @@
+version: "1.1"
+
+services:
+  node:
+    container_name: rentup_backend
+    restart: always
+    image: node:16.10.0
+    ports:
+      - 3005:3005
+    volumes:
+      - ./:/usr/src/app
+    working_dir: /usr/src/app
+
+    networks:
+      - rentup_network
+
+    #PRODUCTION
+    command: bash -c "npm install && npm run production"
+
+    #DEVELOPMENT
+    #command: bash -c "npm install && npm run dev
+
+networks:
+  rentup_network:
+    driver: bridge
