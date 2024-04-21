@@ -23,10 +23,6 @@ https://github.com/Sunat-Nur/RentUp-backend/assets/107460955/b7b47af9-20c6-454f-
 
 
 
-.Nodejs를 이용하여 검색기능이 있는 CRUD 게시판을 구형해봤습니다
-
-
-
 
 구현 영상
 ---------------
@@ -49,6 +45,8 @@ https://github.com/Sunat-Nur/RentUp-backend/assets/107460955/b7b47af9-20c6-454f-
 
 적용 기술
 ---------------
+
+.Nodejs를 이용하여 검색기능이 있는 CRUD 게시판을 구형해봤습니다
 
 
 docker
